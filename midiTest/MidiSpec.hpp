@@ -154,6 +154,10 @@ namespace MIDI {
         inline bool empty(){
             return mSize == 0;
         }
+
+        inline void clear(){
+            mSize = 0;
+        }
             //returns 255? if error
         inline unsigned char pop(){
             if (mSize) {
