@@ -203,7 +203,7 @@ namespace MIDI {
 
         enum ChannelPressureMapping : unsigned char{
             METERING = 0,
-        }
+        };
     }
 
     enum Command : unsigned char{
