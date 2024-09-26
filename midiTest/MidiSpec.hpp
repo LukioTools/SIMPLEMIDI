@@ -419,6 +419,28 @@ namespace MIDI {
         SystemReset, 
     };
 
+    inline const char* toString(SystemMessages n){
+        switch (n) {
+            case SystemExclusive:  return "SystemExclusive";
+            case MIDITimeCodeQtrFrame:  return "MIDITimeCodeQtrFrame";
+            case SongPositionPointer:  return "SongPositionPointer";
+            case SongSelect:  return "SongSelect";
+            case Undefined0:  return "Undefined0";
+            case Undefined1:  return "Undefined1";
+            case TuneRequest:  return "TuneRequest";
+            case EndOfSysEx:  return "EndOfSysEx";
+            case TimingClock:  return "TimingClock";
+            case Undefined2:  return "Undefined2";
+            case Start:  return "Start";
+            case Continue:  return "Continue";
+            case Stop:  return "Stop";
+            case Undefined3:  return "Undefined3";
+            case ActiveSensing:  return "ActiveSensing";
+            case SystemReset:  return "SystemReset";
+            default: return "UNKNOWN_SYS_MSG";
+        }
+    }
+
     namespace DeviceControl {
         template<typename t>
         struct NoteBtn{
@@ -456,7 +478,9 @@ namespace MIDI {
 
             void setCounter(){}
 
-            bool run(const bool& aState, const bool& bState){
+
+            template<typename SerialT>
+            bool run(SerialT& Serial, const bool& aState, const bool& bState){
                 if(aState != lastState) return true;
                 if(bState != aState) counter ++;
                 else counter--;
