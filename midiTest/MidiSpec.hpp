@@ -1,8 +1,6 @@
 #pragma once
 
 
-#include <cstddef>
-#include <iterator>
 namespace MIDI {
 
     enum Command : unsigned char{
@@ -37,7 +35,7 @@ namespace MIDI {
 
     struct CommandByte{
         unsigned char mCommandByte;
-        constexpr const char* getCommandName()const{
+        const char* getCommandName()const{
             switch (getCommand()) {
                 case NoteOFF:                           return "NoteOFF";
                 case NoteON:                            return "NoteON";
@@ -127,15 +125,15 @@ namespace MIDI {
         unsigned char mData[3];
 
         unsigned char* begin(){
-            return std::begin(mData);
+            return mData;
         }
         unsigned char* end(){
-            return std::end(mData);
+            return mData+3;
         }
     };
 
 
-    constexpr std::size_t ExclusiveMaxSize = 62;
+    constexpr size_t ExclusiveMaxSize = 62;
     constexpr unsigned char EOX = 0b11110111;
 
     struct Exclusive : public CommandByte{
