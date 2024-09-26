@@ -144,6 +144,131 @@ namespace MIDI {
             RELAY_CLICK2,
             RELAY_CLICK3,
         };
+        inline const char* toString(NoteMapping n){
+            switch (n) {
+                case REC1: return "REC1";
+                case REC2: return "REC2";
+                case REC3: return "REC3";
+                case REC4: return "REC4";
+                case REC5: return "REC5";
+                case REC6: return "REC6";
+                case REC7: return "REC7";
+                case REC8: return "REC8";
+                case SOLO1: return "SOLO1";
+                case SOLO2: return "SOLO2";
+                case SOLO3: return "SOLO3";
+                case SOLO4: return "SOLO4";
+                case SOLO5: return "SOLO5";
+                case SOLO6: return "SOLO6";
+                case SOLO7: return "SOLO7";
+                case SOLO8: return "SOLO8";
+                case MUTE1: return "MUTE1";
+                case MUTE2: return "MUTE2";
+                case MUTE3: return "MUTE3";
+                case MUTE4: return "MUTE4";
+                case MUTE5: return "MUTE5";
+                case MUTE6: return "MUTE6";
+                case MUTE7: return "MUTE7";
+                case MUTE8: return "MUTE8";
+                case SELECT1: return "SELECT1";
+                case SELECT2: return "SELECT2";
+                case SELECT3: return "SELECT3";
+                case SELECT4: return "SELECT4";
+                case SELECT5: return "SELECT5";
+                case SELECT6: return "SELECT6";
+                case SELECT7: return "SELECT7";
+                case SELECT8: return "SELECT8";
+                case VPOT_SWITCH1: return "VPOT_SWITCH1";
+                case VPOT_SWITCH2: return "VPOT_SWITCH2";
+                case VPOT_SWITCH3: return "VPOT_SWITCH3";
+                case VPOT_SWITCH4: return "VPOT_SWITCH4";
+                case VPOT_SWITCH5: return "VPOT_SWITCH5";
+                case VPOT_SWITCH6: return "VPOT_SWITCH6";
+                case VPOT_SWITCH7: return "VPOT_SWITCH7";
+                case VPOT_SWITCH8: return "VPOT_SWITCH8";
+                case ASSIGN_TRACK: return "ASSIGN_TRACK";
+                case ASSIGN_SEND: return "ASSIGN_SEND";
+                case ASSIGN_PAN: return "ASSIGN_PAN";
+                case ASSIGN_PLUG_IN: return "ASSIGN_PLUG_IN";
+                case ASSIGN_EQ: return "ASSIGN_EQ";
+                case ASSIGN_INSTRUMENT: return "ASSIGN_INSTRUMENT";
+                case BANK_LEFT: return "BANK_LEFT";
+                case BANK_RIGHT: return "BANK_RIGHT";
+                case CHANNEL_LEFT: return "CHANNEL_LEFT";
+                case CHANNEL_RIGHT: return "CHANNEL_RIGHT";
+                case FLIP: return "FLIP";
+                case GLOBAL: return "GLOBAL";
+                case NAME_VALUE_BUTTON: return "NAME_VALUE_BUTTON";
+                case SMPTE_BEATS_BUTTON: return "SMPTE_BEATS_BUTTON";
+                case F1: return "F1";
+                case F2: return "F2";
+                case F3: return "F3";
+                case F4: return "F4";
+                case F5: return "F5";
+                case F6: return "F6";
+                case F7: return "F7";
+                case F8: return "F8";
+                case MIDI_TRACKS: return "MIDI_TRACKS";
+                case INPUTS: return "INPUTS";
+                case AUDIO_TRACKS: return "AUDIO_TRACKS";
+                case AUDIO_INSTRUMENTS: return "AUDIO_INSTRUMENTS";
+                case AUX: return "AUX";
+                case BUSSES: return "BUSSES";
+                case OUTPUTS: return "OUTPUTS";
+                case USER: return "USER";
+                case SHIFT: return "SHIFT";
+                case OPTION: return "OPTION";
+                case CONTROL: return "CONTROL";
+                case ALT: return "ALT";
+                case READ_OFF: return "READ_OFF";
+                case WRITE: return "WRITE";
+                case TRIM: return "TRIM";
+                case TOUCH: return "TOUCH";
+                case LATCH: return "LATCH";
+                case GROUP: return "GROUP";
+                case SAVE: return "SAVE";
+                case UNDO: return "UNDO";
+                case CANCEL: return "CANCEL";
+                case ENTER: return "ENTER";
+                case MARKERS: return "MARKERS";
+                case NUDGE: return "NUDGE";
+                case CYCLE: return "CYCLE";
+                case DROP: return "DROP";
+                case REPLACE: return "REPLACE";
+                case CLICK: return "CLICK";
+                case SOLO: return "SOLO";
+                case REWIND: return "REWIND";
+                case FORWARD: return "FORWARD";
+                case STOP: return "STOP";
+                case PLAY: return "PLAY";
+                case RECORD: return "RECORD";
+                case UP: return "UP";
+                case DOWN: return "DOWN";
+                case LEFT: return "LEFT";
+                case RIGHT: return "RIGHT";
+                case ZOOM: return "ZOOM";
+                case SCRUB: return "SCRUB";
+                case USER_SWITCH_1: return "USER_SWITCH_1";
+                case USER_SWITCH_2: return "USER_SWITCH_2";
+                case FADER_1_TOUCHED: return "FADER_1_TOUCHED";
+                case FADER_2_TOUCHED: return "FADER_2_TOUCHED";
+                case FADER_3_TOUCHED: return "FADER_3_TOUCHED";
+                case FADER_4_TOUCHED: return "FADER_4_TOUCHED";
+                case FADER_5_TOUCHED: return "FADER_5_TOUCHED";
+                case FADER_6_TOUCHED: return "FADER_6_TOUCHED";
+                case FADER_7_TOUCHED: return "FADER_7_TOUCHED";
+                case FADER_8_TOUCHED: return "FADER_8_TOUCHED";
+                case MASTER_FADER_TOUCHED: return "MASTER_FADER_TOUCHED";
+                case SMPTE_LED: return "SMPTE_LED";
+                case BEATS_LED: return "BEATS_LED";
+                case RUDE_SOLO_LED: return "RUDE_SOLO_LED";
+                case RELAY_CLICK0: return "RELAY_CLICK0";
+                case RELAY_CLICK1: return "RELAY_CLICK1";
+                case RELAY_CLICK2: return "RELAY_CLICK2";
+                case RELAY_CLICK3: return "RELAY_CLICK3";
+                default: return "UNKNOWN_KEY";
+            }
+        }
 
         enum ControlMapping : unsigned char{
             VPOT_ROTATION0 = 16,
@@ -186,6 +311,43 @@ namespace MIDI {
             
         };
 
+        inline const char* toString(ControlMapping n){
+            switch (n) {
+            case VPOT_ROTATION0: return "VPOT_ROTATION0";
+            case VPOT_ROTATION1: return "VPOT_ROTATION1";
+            case VPOT_ROTATION2: return "VPOT_ROTATION2";
+            case VPOT_ROTATION3: return "VPOT_ROTATION3";
+            case VPOT_ROTATION4: return "VPOT_ROTATION4";
+            case VPOT_ROTATION5: return "VPOT_ROTATION5";
+            case VPOT_ROTATION6: return "VPOT_ROTATION6";
+            case VPOT_ROTATION7: return "VPOT_ROTATION7";
+            case VPOT_ROTATION8: return "VPOT_ROTATION8";
+            case EXTERNAL_CONTROL: return "EXTERNAL_CONTROL";
+            case VPOT_LED_RING0: return "VPOT_LED_RING0";
+            case VPOT_LED_RING1: return "VPOT_LED_RING1";
+            case VPOT_LED_RING2: return "VPOT_LED_RING2";
+            case VPOT_LED_RING3: return "VPOT_LED_RING3";
+            case VPOT_LED_RING4: return "VPOT_LED_RING4";
+            case VPOT_LED_RING5: return "VPOT_LED_RING5";
+            case VPOT_LED_RING6: return "VPOT_LED_RING6";
+            case VPOT_LED_RING7: return "VPOT_LED_RING7";
+            case VPOT_LED_RING8: return "VPOT_LED_RING8";
+            case JOG_WHEEL: return "JOG_WHEEL";
+            case TIMECODE_DIGIT0: return "TIMECODE_DIGIT0";
+            case TIMECODE_DIGIT1: return "TIMECODE_DIGIT1";
+            case TIMECODE_DIGIT2: return "TIMECODE_DIGIT2";
+            case TIMECODE_DIGIT3: return "TIMECODE_DIGIT3";
+            case TIMECODE_DIGIT4: return "TIMECODE_DIGIT4";
+            case TIMECODE_DIGIT5: return "TIMECODE_DIGIT5";
+            case TIMECODE_DIGIT6: return "TIMECODE_DIGIT6";
+            case TIMECODE_DIGIT7: return "TIMECODE_DIGIT7";
+            case TIMECODE_DIGIT8: return "TIMECODE_DIGIT8";
+            case TIMECODE_DIGIT9: return "TIMECODE_DIGIT9";
+            case ASSIGNMENT_DIGIT1: return "ASSIGNMENT_DIGIT1";
+            case ASSIGNMENT_DIGIT2: return "ASSIGNMENT_DIGIT2";
+            default: return "UKNOWN_CONTROL_MAPPING";
+            }
+        }
 
             //channel
         enum PitchBendMapping : unsigned char{
@@ -201,9 +363,30 @@ namespace MIDI {
             FADER_POSITION_MASTER = 8,
         };
 
+        inline const char* toString(PitchBendMapping n){
+            switch (n) {
+                case FADER_POSITION0: return "FADER_POSITION0";
+                case FADER_POSITION1: return "FADER_POSITION1";
+                case FADER_POSITION2: return "FADER_POSITION2";
+                case FADER_POSITION3: return "FADER_POSITION3";
+                case FADER_POSITION4: return "FADER_POSITION4";
+                case FADER_POSITION5: return "FADER_POSITION5";
+                case FADER_POSITION6: return "FADER_POSITION6";
+                case FADER_POSITION7: return "FADER_POSITION7";
+                case FADER_POSITION_MASTER: return "FADER_POSITION_MASTER";
+                default: return "UKNOWN_FADER";
+            }
+        }
+
         enum ChannelPressureMapping : unsigned char{
             METERING = 0,
         };
+        inline const char* toString(ChannelPressureMapping n){
+            switch (n) {
+                case METERING: return "METERING";
+                default: return "UKNOWN_PRESSURE";
+            }
+        }
     }
 
     enum Command : unsigned char{
@@ -451,6 +634,85 @@ namespace MIDI {
             }
 
             return false;
+        }
+        template<typename T>
+        void print(T& printable){
+            switch (getCommand()) {
+                case NoteOFF: {
+                    printable.print("NoteOFF[");
+                    printable.print(getChannel());
+                    printable.print("]{ Note: ");
+                    printable.print(MCU::toString(static_cast<MCU::NoteMapping>(mData[0])));
+                    printable.print(", Velocity: ");
+                    printable.print(mData[1]);
+                    printable.println(" }");
+                    return;
+                }
+                case NoteON: {
+                    printable.print("NoteON[");
+                    printable.print(getChannel());
+                    printable.print("]{ Note: ");
+                    printable.print(MCU::toString(static_cast<MCU::NoteMapping>(mData[0])));
+                    printable.print(", Velocity: ");
+                    printable.print(mData[1]);
+                    printable.println(" }");
+                    return;
+                }
+                case PolyphonicAftertouch: {
+                    printable.print("PolyphonicAftertouch[");
+                    printable.print(getChannel());
+                    printable.print("]{ Note: ");
+                    printable.print(MCU::toString(static_cast<MCU::NoteMapping>(mData[0])));
+                    printable.print(", Pressure: ");
+                    printable.print(mData[1]);
+                    printable.println(" }");
+                    return;
+                }
+                case ControlModeChange: {
+                    printable.print("ControlModeChange[");
+                    printable.print(getChannel());
+                    printable.print("]{ Device[");
+                    printable.print(mData[0]);
+                    printable.print("]: ");
+                    printable.print(MCU::toString(static_cast<MCU::ControlMapping>(mData[0])));
+                    printable.print(", Value: ");
+                    printable.print(mData[1]);
+                    printable.println(" }");
+                }
+                case ProgramChange: {
+                    printable.print("ProgramChange[");
+                    printable.print(getChannel());
+                    printable.print("]{ Program: ");
+                    printable.print(mData[0]);
+                    printable.println(" }");
+                }
+                case ChannelAftertouch: {
+                    printable.print("ChannelAftertouch[");
+                    printable.print(getChannel());
+                    printable.print("]{ Pressure: ");
+                    printable.print(mData[1]);
+                    printable.println(" }");
+                    return;
+                }
+                case PitchBendChange: {
+                    printable.print("PitchBendChange[");
+                    printable.print(getChannel());
+                    printable.print("]{ FaderName: ");
+                    printable.print(MCU::toString(static_cast<MCU::PitchBendMapping>(getChannel())));
+                    printable.print(" Value: ");
+                    printable.print(mData[0]);
+                    printable.println(" }");
+                }
+                case SystemMessage: {
+                    printable.print("SystemMessage[");
+                    printable.print(getChannel());
+                    printable.print("]{ Message: ");
+                    printable.print(toString(static_cast<SystemMessages>(getChannel())));
+                    //printable.print(" Value: ");
+                    //printable.print(mData[0]);
+                    printable.println(" }");
+                }
+            }
         }
     };
 
