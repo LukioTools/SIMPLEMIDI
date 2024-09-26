@@ -2,7 +2,6 @@
 #include <usbmidi.h>
 #include "MidiSpec.hpp"
 
-
 MIDI::Basic basic;
 
 void setup() {
@@ -10,26 +9,25 @@ void setup() {
     Serial.begin(9600);
 }
 
+
 void loop() {
-	//Handle USB communication
-	USBMIDI.poll();
 
-	while (USBMIDI.available()) {
-		basic.mCommandByte = USBMIDI.read();
-        int c = basic.getDataByteCount();
-        if(c != -1) for (int i = 0; i < c; i++) {
-            USBMIDI.poll();
-            basic.mData[i] = USBMIDI.read();
-        }
+    if(basic.read(USBMIDI)) return;
+    if(basic.getCommand() == MIDI::PitchBendChange){
+        Serial.print("Slider: ");
+        Serial.print(basic.getChannel());
+        Serial.print(" value: ");
+        Serial.println(MIDI::getShort(basic.mData));
+    }else if(basic.getCommand() == MIDI::ControlModeChange){
+        Serial.print("Control mode change channel: ");
+        Serial.print(basic.getChannel());
+        Serial.print(" Device: ");
+        Serial.print(basic.mData[0]);
+        Serial.print(" Value: ");
+        Serial.println(basic.mData[1]);
+    }
 
-        if(basic.getCommand() != MIDI::ChannelAftertouch){
-            Serial.print(basic.getCommandName());
-            Serial.print(" ");
-            Serial.println(basic.getChannel());
-        }
 
-	}
-
-	// Flush the output.
-	USBMIDI.flush();
+    
+    USBMIDI.flush();
 }

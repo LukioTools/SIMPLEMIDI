@@ -3,6 +3,7 @@
 
 namespace MIDI {
 
+
     enum Command : unsigned char{
         NoteOFF,
         NoteON,
@@ -102,7 +103,7 @@ namespace MIDI {
                         case ActiveSensing:
                         case SystemReset:   return 0;
 
-                        case MIDITimeCodeQtrFrame: return -1; //see spec
+                        case MIDITimeCodeQtrFrame: return 2; //see spec
 
                         case Undefined0: 
                         case Undefined1: 
@@ -130,15 +131,35 @@ namespace MIDI {
         unsigned char* end(){
             return mData+3;
         }
+
+        template<typename t>
+        bool read(t& midi){
+            do{ 
+                midi.poll();
+                mCommandByte = midi.read();
+            } while(mCommandByte < 128);
+            
+            unsigned char byteCount = getDataByteCount();
+            
+            if(byteCount == -1) return true;
+
+            for (int i = 0; i < byteCount; i++) {
+                midi.poll();
+                mData[i] = midi.read();
+            }
+
+            return false;
+        }
     };
 
+    
 
     constexpr size_t ExclusiveMaxSize = 62;
     constexpr unsigned char EOX = 0b11110111;
 
     struct Exclusive : public CommandByte{
-        unsigned char mSize = 0;
         unsigned char mData[ExclusiveMaxSize];
+        unsigned char mSize = 0;
 
         unsigned char* begin(){
             return mData;
@@ -180,9 +201,21 @@ namespace MIDI {
             return mData[mSize];
         }
     };
-
-
-
     
+    unsigned short getShort(byte lsb, byte msb){
+        unsigned short s = msb;
+        s<<=7;
+        s|=lsb;
+        return s;
+    }
+
+    unsigned short getShort(unsigned char* lsb_msb){
+        unsigned short s = lsb_msb[1];
+        s<<=7;
+        s|=lsb_msb[0];
+        return s;
+    }
+
+
 
 }
