@@ -1,8 +1,177 @@
 #pragma once
 
 
+#include <cstddef>
 namespace MIDI {
 
+    namespace MCU {
+        enum NoteMapping : unsigned char{
+            REC1,
+            REC2,
+            REC3,
+            REC4,
+            REC5,
+            REC6,
+            REC7,
+            REC8,
+
+            SOLO1,
+            SOLO2,
+            SOLO3,
+            SOLO4,
+            SOLO5,
+            SOLO6,
+            SOLO7,
+            SOLO8,
+
+            MUTE1,
+            MUTE2,
+            MUTE3,
+            MUTE4,
+            MUTE5,
+            MUTE6,
+            MUTE7,
+            MUTE8,
+
+            SELECT1,
+            SELECT2,
+            SELECT3,
+            SELECT4,
+            SELECT5,
+            SELECT6,
+            SELECT7,
+            SELECT8,
+
+            VPOT_SWITCH1,
+            VPOT_SWITCH2,
+            VPOT_SWITCH3,
+            VPOT_SWITCH4,
+            VPOT_SWITCH5,
+            VPOT_SWITCH6,
+            VPOT_SWITCH7,
+            VPOT_SWITCH8,
+
+            ASSIGN_TRACK,
+            ASSIGN_SEND,
+            ASSIGN_PAN,
+            ASSIGN_PLUG_IN,
+            ASSIGN_EQ,
+            ASSIGN_INSTRUMENT,
+            
+            BANK_LEFT,
+            BANK_RIGHT,
+            CHANNEL_LEFT,
+            CHANNEL_RIGHT,
+
+            FLIP,
+            GLOBAL,
+
+            NAME_VALUE_BUTTON,
+            SMPTE_BEATS_BUTTON,
+
+            F1,
+            F2,
+            F3,
+            F4,
+            F5,
+            F6,
+            F7,
+            F8,
+
+            MIDI_TRACKS,
+            INPUTS,
+            AUDIO_TRACKS,
+            AUDIO_INSTRUMENTS,
+            AUX,
+            BUSSES,
+            OUTPUTS,
+            USER,
+            SHIFT,
+            OPTION,
+            CONTROL,
+            ALT,
+
+            READ_OFF,
+            WRITE,
+            TRIM,
+            TOUCH,
+            LATCH,
+            GROUP,
+
+            SAVE,
+            UNDO,
+            CANCEL,
+            ENTER,
+
+            MARKERS,
+            NUDGE,
+            CYCLE,
+            DROP,
+            REPLACE,
+            CLICK,
+            SOLO,
+
+            REWIND,
+            FORWARD,
+            STOP,
+            PLAY,
+            RECORD,
+
+            UP,
+            DOWN,
+            LEFT,
+            RIGHT,
+            ZOOM,
+            SCRUB,
+
+            USER_SWITCH_1,
+            USER_SWITCH_2,
+            
+            FADER_1_TOUCHED,
+            FADER_2_TOUCHED,
+            FADER_3_TOUCHED,
+            FADER_4_TOUCHED,
+            FADER_5_TOUCHED,
+            FADER_6_TOUCHED,
+            FADER_7_TOUCHED,
+            FADER_8_TOUCHED,
+
+            MASTER_FADER_TOUCHED,
+            SMPTE_LED,
+            BEATS_LED,
+            RUDE_SOLO_LED,
+
+            RELAY_CLICK0,
+            RELAY_CLICK1,
+            RELAY_CLICK2,
+            RELAY_CLICK3,
+        };
+
+        enum ControlMapping : unsigned char{
+            VPOT_ROTATION0 = 16,
+            VPOT_ROTATION1,
+            VPOT_ROTATION2,
+            VPOT_ROTATION3,
+            VPOT_ROTATION4,
+            VPOT_ROTATION5,
+            VPOT_ROTATION6,
+            VPOT_ROTATION7,
+            VPOT_ROTATION8,
+
+            EXTERNAL_CONTROL = 46,
+
+            VPOT_LED_RING0 = 48,
+            VPOT_LED_RING1,
+            VPOT_LED_RING2,
+            VPOT_LED_RING3,
+            VPOT_LED_RING4,
+            VPOT_LED_RING5,
+            VPOT_LED_RING6,
+            VPOT_LED_RING7,
+            VPOT_LED_RING8,
+            
+        };
+    }
 
     enum Command : unsigned char{
         NoteOFF,
@@ -33,6 +202,8 @@ namespace MIDI {
         ActiveSensing, 
         SystemReset, 
     };
+
+    
 
     struct CommandByte{
         unsigned char mCommandByte;
@@ -141,7 +312,7 @@ namespace MIDI {
             
             unsigned char byteCount = getDataByteCount();
             
-            if(byteCount == -1) return true;
+            if(byteCount == static_cast<unsigned char>(-1)) return true;
 
             for (int i = 0; i < byteCount; i++) {
                 midi.poll();
@@ -202,14 +373,14 @@ namespace MIDI {
         }
     };
     
-    unsigned short getShort(byte lsb, byte msb){
+    inline unsigned short getShort(unsigned char lsb, unsigned char msb){
         unsigned short s = msb;
         s<<=7;
         s|=lsb;
         return s;
     }
 
-    unsigned short getShort(unsigned char* lsb_msb){
+    inline unsigned short getShort(unsigned char* lsb_msb){
         unsigned short s = lsb_msb[1];
         s<<=7;
         s|=lsb_msb[0];
