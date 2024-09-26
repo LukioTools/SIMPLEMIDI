@@ -1,7 +1,7 @@
 #include <midi_serialization.h>
 #include <usbmidi.h>
-#include "MidiSpec.hpp"
-
+#include "MIDIenums.hpp"
+/*
 #define PLAY_PIN PD2
 MIDI::DeviceControl::NoteBtn<USBMIDI_> playBtn(USBMIDI, 0, MIDI::MCU::PLAY, 127);
 
@@ -33,16 +33,21 @@ void printControlModeChange(MIDI::Basic& basic){
     Serial.print(" value: ");
     Serial.println(basic.mData[1]);
 }
-
+*/
 void setup() {
-    pinMode(LED_BUILTIN, OUTPUT);
+    //pinMode(LED_BUILTIN, OUTPUT);
     Serial.begin(115200);
-    pinMode(PLAY_PIN, INPUT);
-    pinMode(PAUSE_PIN, INPUT);
+    //pinMode(PLAY_PIN, INPUT);
+    //pinMode(PAUSE_PIN, INPUT);
 }
-
+unsigned char i = 0;
 void loop() {
-
+    //Serial.println(MIDI::maxSize);
+    Serial.println(MIDI::MCU::toString(static_cast<MIDI::MCU::NoteMapping>(i++)));
+    if(119 < i)
+      i = 0;
+    delay(100);
+    /*
     if(USBMIDI.available()){
         if(basic.read(USBMIDI)) return;
         if(basic.getCommand() == MIDI::PitchBendChange){
@@ -61,4 +66,5 @@ void loop() {
     playBtn.run(digitalRead(PLAY_PIN));
     stopBtn.run(digitalRead(PAUSE_PIN));
     delay(10);
+    */
 }
