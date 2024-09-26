@@ -187,6 +187,8 @@ namespace MIDI {
             
         };
 
+
+            //channel
         enum PitchBendMapping : unsigned char{
             FADER_POSITION0 = 0,
             FADER_POSITION1,
@@ -238,6 +240,11 @@ namespace MIDI {
     
 
     struct CommandByte{
+
+        static inline CommandByte make(Command c, unsigned char channel){
+            return {static_cast<unsigned char>(0b10000000 | (c<<4) | (channel & 0xF))};
+        }
+
         unsigned char mCommandByte;
         const char* getCommandName()const{
             switch (getCommand()) {
@@ -437,4 +444,31 @@ namespace MIDI {
 
 
 
+    template<typename T>
+    inline bool sendKey(T& midi, unsigned char channel, MCU::NoteMapping note, unsigned char velocity){
+        midi.write(CommandByte::make(Command::NoteON, channel).mCommandByte);
+        midi.write(note & 0b01111111);      //ensures that it is max 127
+        midi.write(velocity & 0b01111111);  //ensures that it is max 127
+    }
+
+    template<typename T>
+    inline bool sendControl(T& midi, unsigned char channel, MCU::ControlMapping control, unsigned char value){
+        midi.write(CommandByte::make(Command::ControlModeChange, channel).mCommandByte);
+        midi.write(control & 0b01111111);      //ensures that it is max 127
+        midi.write(value & 0b01111111);  //ensures that it is max 127
+    }
+
+    template<typename T>
+    inline bool sendPitch(T& midi, MCU::PitchBendMapping pitch_channel, unsigned char lsb, unsigned char msb){
+        midi.write(CommandByte::make(Command::ControlModeChange, pitch_channel).mCommandByte);
+        midi.write(lsb & 0b01111111);  //ensures that it is max 127
+        midi.write(msb & 0b01111111);  //ensures that it is max 127
+    }
+
+    template<typename T>
+    inline bool sendPitch(T& midi, MCU::PitchBendMapping pitch_channel, unsigned short lsb_msb_14bit){
+        midi.write(CommandByte::make(Command::ControlModeChange, pitch_channel).mCommandByte);
+        midi.write(lsb_msb_14bit & 0b01111111);  //ensures that it is max 127
+        midi.write(lsb_msb_14bit >> 7);  //ensures that it is max 127
+    }
 }
