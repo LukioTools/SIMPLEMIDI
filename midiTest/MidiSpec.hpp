@@ -371,11 +371,6 @@ namespace MIDI {
 
             return false;
         }
-
-        template<typename t>
-        bool send(t& midi){
-            midi.send(CommandByte);
-        }
     };
 
     
@@ -447,8 +442,11 @@ namespace MIDI {
     template<typename T>
     inline bool sendKey(T& midi, unsigned char channel, MCU::NoteMapping note, unsigned char velocity){
         midi.write(CommandByte::make(Command::NoteON, channel).mCommandByte);
+        USBMIDI.flush();
         midi.write(note & 0b01111111);      //ensures that it is max 127
+        USBMIDI.flush();
         midi.write(velocity & 0b01111111);  //ensures that it is max 127
+        USBMIDI.flush();
     }
 
     template<typename T>

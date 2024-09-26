@@ -31,11 +31,15 @@ void loop() {
     if(Serial.available()){
         byte b = Serial.read();
         if(b == 'w'){
-            USBMIDI.write(0b1001 | 0b0000);
+            Serial.println("-----------------------");
+            delay(1000);
+            MIDI::sendKey(USBMIDI, 0, MIDI::MCU::PLAY, 127);
+            Serial.println("done");
+            delay(1000);
+
         }
     }
 
 
     
-    USBMIDI.flush();
 }
