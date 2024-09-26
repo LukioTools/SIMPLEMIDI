@@ -14,17 +14,25 @@ void loop() {
 
     if(basic.read(USBMIDI)) return;
     if(basic.getCommand() == MIDI::PitchBendChange){
-        Serial.print("Slider: ");
+        Serial.print("Pitch bend change slider: ");
         Serial.print(basic.getChannel());
         Serial.print(" value: ");
         Serial.println(MIDI::getShort(basic.mData));
     }else if(basic.getCommand() == MIDI::ControlModeChange){
         Serial.print("Control mode change channel: ");
         Serial.print(basic.getChannel());
-        Serial.print(" Device: ");
+        Serial.print(" device: ");
         Serial.print(basic.mData[0]);
-        Serial.print(" Value: ");
+        Serial.print(" value: ");
         Serial.println(basic.mData[1]);
+    }
+
+
+    if(Serial.available()){
+        byte b = Serial.read();
+        if(b == 'w'){
+            USBMIDI.write(0b1001 | 0b0000);
+        }
     }
 
 

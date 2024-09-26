@@ -1,7 +1,6 @@
 #pragma once
 
 
-#include <cstddef>
 namespace MIDI {
 
     namespace MCU {
@@ -203,7 +202,7 @@ namespace MIDI {
 
         enum ChannelPressureMapping : unsigned char{
             METERING = 0,
-        }
+        };
     }
 
     enum Command : unsigned char{
@@ -324,9 +323,20 @@ namespace MIDI {
         static unsigned char getChannel(unsigned char mCommandByte){
             return mCommandByte & 0xF;
         }
+
+        static unsigned char makeCommandByte(Command c, unsigned char channel){
+            return 0b10000000 | (c<<4) | (channel & 0xF);
+        }
     };
 
     struct Basic : public CommandByte{
+
+        Basic(){ }
+
+        Basic(Command _command, unsigned char _channel){
+            makeCommandByte(_command, _channel);
+        }
+
         unsigned char mData[3];
 
         unsigned char* begin(){
@@ -353,6 +363,11 @@ namespace MIDI {
             }
 
             return false;
+        }
+
+        template<typename t>
+        bool send(t& midi){
+            midi.send(CommandByte);
         }
     };
 
