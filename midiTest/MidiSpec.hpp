@@ -169,8 +169,41 @@ namespace MIDI {
             VPOT_LED_RING6,
             VPOT_LED_RING7,
             VPOT_LED_RING8,
+
+            JOG_WHEEL = 60,
+
+            TIMECODE_DIGIT0 = 64,
+            TIMECODE_DIGIT1,
+            TIMECODE_DIGIT2,
+            TIMECODE_DIGIT3,
+            TIMECODE_DIGIT4,
+            TIMECODE_DIGIT5,
+            TIMECODE_DIGIT6,
+            TIMECODE_DIGIT7,
+            TIMECODE_DIGIT8,
+            TIMECODE_DIGIT9,
+
+            ASSIGNMENT_DIGIT1= 74,
+            ASSIGNMENT_DIGIT2= 75,
             
         };
+
+        enum PitchBendMapping : unsigned char{
+            FADER_POSITION0 = 0,
+            FADER_POSITION1,
+            FADER_POSITION2,
+            FADER_POSITION3,
+            FADER_POSITION4,
+            FADER_POSITION5,
+            FADER_POSITION6,
+            FADER_POSITION7,
+
+            FADER_POSITION_MASTER = 8,
+        };
+
+        enum ChannelPressureMapping : unsigned char{
+            METERING = 0,
+        }
     }
 
     enum Command : unsigned char{
