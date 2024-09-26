@@ -37,7 +37,7 @@ namespace MIDI {
         unsigned char mCommandByte;
         unsigned char mData[3];
 
-        constexpr const char* getCommandName()const{
+        const char* getCommandName()const{
             switch (getCommand()) {
                 case NoteOFF:                           return "NoteOFF";
                 case NoteON:                            return "NoteON";
@@ -70,6 +70,7 @@ namespace MIDI {
                 default:
                     return "UNKNOWN";
             }
+            return "UNKNWON";
         }
 
         Command getCommand() const{
@@ -88,7 +89,7 @@ namespace MIDI {
                 case ProgramChange: 
                 case ChannelAftertouch: return 1;
 
-                case ControlModeChange: return -1; // see spec
+                case ControlModeChange: return 2; // see spec
 
                 case SystemMessage: switch (getChannel()) {
                         case SystemExclusive: return -1; // Variable
