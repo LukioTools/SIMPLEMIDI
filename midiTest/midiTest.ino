@@ -3,7 +3,7 @@
 #include "MidiSpec.hpp"
 
 
-MIDI::Basic basic;
+MIDI::Exclusive exclusive;
 
 void setup() {
     pinMode(LED_BUILTIN, OUTPUT);
@@ -11,25 +11,30 @@ void setup() {
 }
 
 void loop() {
-	//Handle USB communication
 	USBMIDI.poll();
 
-	while (USBMIDI.available()) {
-		basic.mCommandByte = USBMIDI.read();
-        int c = basic.getDataByteCount();
-        if(c != -1) for (int i = 0; i < c; i++) {
+    MIDI::Basic basic;
+    basic.mCommandByte = USBMIDI.read();
+    int c = basic.getDataByteCount();
+    
+    if(c != -1) { 
+        for (int i = 0; i < c; i++) {
             USBMIDI.poll();
             basic.mData[i] = USBMIDI.read();
         }
-
-        if(basic.getCommand() != MIDI::ChannelAftertouch){
-            Serial.print(basic.getCommandName());
-            Serial.print(" ");
-            Serial.println(basic.getChannel());
+    } else {
+        MIDI::Exclusive exclusive;
+        int counter = 0;
+        while (true) {
+            counter++;
         }
+    }
 
-	}
+    if(basic.getCommand() != MIDI::ChannelAftertouch){
+        Serial.print(basic.getCommandName());
+        Serial.print(" ");
+        Serial.println(basic.getChannel());
+    }
 
-	// Flush the output.
 	USBMIDI.flush();
 }
