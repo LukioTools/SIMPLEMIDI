@@ -1,8 +1,11 @@
-#include <midi_serialization.h>
-#include <usbmidi.h>
+
+#include "MIDI.h"
 #include "MIDIenums.hpp"
 #include "MidiSpec.hpp"
 #include "MIDIbasic.hpp"
+
+
+
 
 #define PLAY_PIN PD2
 MIDI::DeviceControl::NoteBtn<USBMIDI_> playBtn(USBMIDI, 0, MIDI::MCU::PLAY, 127);
@@ -20,6 +23,7 @@ MIDI::SoftwareControl::NoteBtn<USBMIDI_> stopBtnSoftware(USBMIDI, 0, MIDI::MCU::
 MIDI::Basic basic;
 
 void setup() {
+    
     //pinMode(LED_BUILTIN, OUTPUT);
     Serial.begin(115200);
     pinMode(PLAY_PIN, INPUT);
@@ -35,13 +39,14 @@ void loop() {
         if(!basic.read(USBMIDI)){
             rotarty1.updateValue(basic);
         };
-        basic.read(USBMIDI);
     }
+
 
     if(Serial.available()){
         byte b = Serial.read();
         playBtnSoftware.run(b);
         stopBtnSoftware.run(b);
+
     }
 
     playBtn.run(digitalRead(PLAY_PIN));
