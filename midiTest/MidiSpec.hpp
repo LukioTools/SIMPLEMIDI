@@ -6,8 +6,6 @@
 
 namespace MIDI {
 
-    
-
     namespace DeviceControl {
         template<typename t>
         struct NoteBtn{
