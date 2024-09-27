@@ -46,14 +46,14 @@ namespace MIDI {
 
     template<typename T>
     inline bool sendPitch(T& midi, MCU::PitchBendMapping pitch_channel, unsigned char lsb, unsigned char msb){
-        midi.write(CommandByte::make(Command::ControlModeChange, pitch_channel).mCommandByte);
+        midi.write(CommandByte::make(Command::PitchBendChange, pitch_channel).mCommandByte);
         midi.write(capData(lsb));   //ensures that it is max 127
         midi.write(capData(msb));     //ensures that it is max 127
     }
 
     template<typename T>
     inline bool sendPitch(T& midi, MCU::PitchBendMapping pitch_channel, unsigned short lsb_msb_14bit){
-        midi.write(CommandByte::make(Command::ControlModeChange, pitch_channel).mCommandByte);
+        midi.write(CommandByte::make(Command::PitchBendChange, pitch_channel).mCommandByte);
         midi.write(lsb_msb_14bit & 0b01111111);     //ensures that it is max 127
         midi.write(capData(lsb_msb_14bit >> 7));             //ensures that it is max 127
     }

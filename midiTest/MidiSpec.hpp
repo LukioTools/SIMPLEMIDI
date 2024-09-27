@@ -2,7 +2,7 @@
 
 #include "MIDIenums.hpp"
 #include "MIDIsend.hpp"
-
+#include "MIDIbasic.hpp"
 
 namespace MIDI {
 
@@ -39,33 +39,45 @@ namespace MIDI {
             int lastCounter;
             MCU::PitchBendMapping channel;
 
+            int resolution;
+
             t& midi;
             NoteRotaryEncoder(){}
-            NoteRotaryEncoder(t& _midi, MCU::PitchBendMapping _channel) : midi(_midi),channel(_channel){}
+            NoteRotaryEncoder(t& _midi, MCU::PitchBendMapping _channel, int _resolution) : midi(_midi),channel(_channel), resolution(_resolution){}
 
             void setCounter(){}
 
 
             template<typename SerialT>
             bool run(SerialT& Serial, const bool& aState, const bool& bState){
-                if(aState != lastState) return true;
-                if(bState != aState) counter ++;
-                else counter--;
+
+                if(aState != lastState && aState == 1){
+                
+                    if(bState != aState){
+                        counter -= resolution;
+                    }else {
+                        counter += resolution;
+                    }
+
+                    if(counter < 0) counter = 0;
+                    if(counter > 16384) counter = 16384;
+
+                    Serial.print("channel ");
+                    Serial.print(channel);
+                    Serial.print(" counter ");
+                    Serial.println(counter);
+                    sendPitch(midi, channel, counter);
+                    midi.flush();
+                }
+
                 lastState = aState;
-
-                
-                if(counter < 0) {
-                    counter = 0;
-                }
-
-                if(counter > 16384){
-                    counter = 16384;
-                }
-
-                Serial.println(counter);
-                sendPitch(midi, channel, counter);
                 
 
+            }
+
+            void updateValue(Basic& basic){
+                if(basic.getCommand() == Command::PitchBendChange && basic.getChannel() == channel)
+                    counter = getShort(basic.mData[0], basic.mData[1]);
             }
         };
     }

@@ -1,16 +1,18 @@
 #include <midi_serialization.h>
 #include <usbmidi.h>
 #include "MIDIenums.hpp"
-/*
+#include "MidiSpec.hpp"
+#include "MIDIbasic.hpp"
+
 #define PLAY_PIN PD2
 MIDI::DeviceControl::NoteBtn<USBMIDI_> playBtn(USBMIDI, 0, MIDI::MCU::PLAY, 127);
 
 #define PAUSE_PIN PD3
 MIDI::DeviceControl::NoteBtn<USBMIDI_> stopBtn(USBMIDI, 0, MIDI::MCU::STOP, 127);
 
-#define ROTARY1_CLK PB4
-#define ROTARY1_DT PE6
-MIDI::DeviceControl::NoteRotaryEncoder<USBMIDI_> rotarty1(USBMIDI, MIDI::MCU::PitchBendMapping::FADER_POSITION0);
+#define ROTARY1_CLK A0
+#define ROTARY1_DT A1
+MIDI::DeviceControl::NoteRotaryEncoder<USBMIDI_> rotarty1(USBMIDI, MIDI::MCU::PitchBendMapping::FADER_POSITION_MASTER, 100);
 
 MIDI::SoftwareControl::NoteBtn<USBMIDI_> playBtnSoftware(USBMIDI, 0, MIDI::MCU::PLAY, 127, 'w');
 MIDI::SoftwareControl::NoteBtn<USBMIDI_> stopBtnSoftware(USBMIDI, 0, MIDI::MCU::STOP, 127, 's');
@@ -30,13 +32,15 @@ void setup() {
 unsigned char i = 0;
 void loop() {
     //Serial.println(MIDI::maxSize);
-    Serial.println(MIDI::MCU::toString(static_cast<MIDI::MCU::NoteMapping>(i++)));
-    if(119 < i)
-      i = 0;
-    delay(100);
-    /*
+    //Serial.println(MIDI::MCU::toString(static_cast<MIDI::MCU::NoteMapping>(i++)));
+    //if(119 < i)
+    //  i = 0;
+    //delay(100);
+    
     if(USBMIDI.available()){
-        if(basic.read(USBMIDI)) return;
+        if(!basic.read(USBMIDI)){
+            rotarty1.updateValue(basic);
+        };
     }
 
     if(Serial.available()){
@@ -50,6 +54,6 @@ void loop() {
 
     rotarty1.run(Serial, digitalRead(ROTARY1_CLK),digitalRead(ROTARY1_DT));
 
-    delay(10);
-    */
+    delay(1);
+    
 }

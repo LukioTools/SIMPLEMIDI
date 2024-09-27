@@ -102,7 +102,7 @@ namespace MIDI {
                     printable.print("]{ FaderName: ");
                     printable.print(MCU::toString(static_cast<MCU::PitchBendMapping>(getChannel())));
                     printable.print(" Value: ");
-                    printable.print(mData[0]);
+                    printable.print(getShort(mData[0], mData[1]));
                     printable.println(" }");
                 }
                 case SystemMessage: {
