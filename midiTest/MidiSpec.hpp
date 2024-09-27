@@ -419,10 +419,10 @@ namespace MIDI {
         SystemReset, 
     };
 
-    inline const char* toString(SystemMessages n){
+    inline  const char* toString(SystemMessages n){
         switch (n) {
-            case SystemExclusive:  return "SystemExclusive";
-            case MIDITimeCodeQtrFrame:  return "MIDITimeCodeQtrFrame";
+            case SystemExclusive:  return  "SystemExclusive";
+            case MIDITimeCodeQtrFrame:  return  "MIDITimeCodeQtrFrame";
             case SongPositionPointer:  return "SongPositionPointer";
             case SongSelect:  return "SongSelect";
             case Undefined0:  return "Undefined0";
@@ -470,11 +470,11 @@ namespace MIDI {
             bool lastState = false;
             int counter;
             int lastCounter;
-            unsigned char channel;
+            MCU::PitchBendMapping channel;
 
             t& midi;
             NoteRotaryEncoder(){}
-            NoteRotaryEncoder(t& _midi, unsigned char _channel) : midi(_midi),channel(_channel){}
+            NoteRotaryEncoder(t& _midi, MCU::PitchBendMapping _channel) : midi(_midi),channel(_channel){}
 
             void setCounter(){}
 
