@@ -181,6 +181,34 @@ void strcpy_P(const char*, const char*);
 
         constexpr const char METERING[]                 PROGMEM = "METERING";
         constexpr const char METERING_DEFAULT[]         PROGMEM = "UNKNOWN_METERING";
+
+        constexpr const char NoteOFF[]                  PROGMEM = "NoteOFF";
+        constexpr const char NoteON[]                   PROGMEM = "NoteON";
+        constexpr const char PolyphonicAftertouch[]     PROGMEM = "PolyphonicAftertouch";
+        constexpr const char ControlModeChange[]        PROGMEM = "ControlModeChange";
+        constexpr const char ProgramChange[]            PROGMEM = "ProgramChange";
+        constexpr const char ChannelAftertouch[]        PROGMEM = "ChannelAftertouch";
+        constexpr const char PitchBendChange[]          PROGMEM = "PitchBendChange";
+        constexpr const char SystemMessage[]            PROGMEM = "SystemMessage";
+        constexpr const char COMMAND_DEFAULT[]          PROGMEM = "UNKNOWN_COMMAND";
+
+        constexpr const char SystemExclusive[]          PROGMEM = "SystemExclusive";
+        constexpr const char MIDITimeCodeQtrFrame[]     PROGMEM = "MIDITimeCodeQtrFrame";
+        constexpr const char SongPositionPointer[]      PROGMEM = "SongPositionPointer";
+        constexpr const char SongSelect[]               PROGMEM = "SongSelect";
+        constexpr const char Undefined0[]               PROGMEM = "Undefined0";
+        constexpr const char Undefined1[]               PROGMEM = "Undefined1";
+        constexpr const char TuneRequest[]              PROGMEM = "TuneRequest";
+        constexpr const char EndOfSysEx[]               PROGMEM = "EndOfSysEx";
+        constexpr const char TimingClock[]              PROGMEM = "TimingClock";
+        constexpr const char Undefined2[]               PROGMEM = "Undefined2";
+        constexpr const char Start[]                    PROGMEM = "Start";
+        constexpr const char Continue[]                 PROGMEM = "Continue";
+        constexpr const char Stop[]                     PROGMEM = "Stop";
+        constexpr const char Undefined3[]               PROGMEM = "Undefined3";
+        constexpr const char ActiveSensing[]            PROGMEM = "ActiveSensing";
+        constexpr const char SystemReset[]              PROGMEM = "SystemReset";
+        constexpr const char SYSMSG_DEFAULT[]             PROGMEM = "UNKNOWN_SYS_MSG";
     }  
 
 
@@ -738,6 +766,21 @@ void strcpy_P(const char*, const char*);
         SystemMessage,
     };
 
+    const char* toString(Command n){
+        switch (n) {
+            case NoteOFF:              strcpy_P(loadedString, PROGMEM_STRINGS::NoteOFF); return loadedString; 
+            case NoteON:               strcpy_P(loadedString, PROGMEM_STRINGS::NoteON); return loadedString; 
+            case PolyphonicAftertouch: strcpy_P(loadedString, PROGMEM_STRINGS::PolyphonicAftertouch); return loadedString; 
+            case ControlModeChange:    strcpy_P(loadedString, PROGMEM_STRINGS::ControlModeChange); return loadedString; 
+            case ProgramChange:        strcpy_P(loadedString, PROGMEM_STRINGS::ProgramChange); return loadedString; 
+            case ChannelAftertouch:    strcpy_P(loadedString, PROGMEM_STRINGS::ChannelAftertouch); return loadedString; 
+            case PitchBendChange:      strcpy_P(loadedString, PROGMEM_STRINGS::PitchBendChange); return loadedString; 
+            case SystemMessage:        strcpy_P(loadedString, PROGMEM_STRINGS::SystemMessage); return loadedString; 
+            default:                    strcpy_P(loadedString, PROGMEM_STRINGS::COMMAND_DEFAULT); return loadedString; 
+
+        }
+    }
+
     enum SystemMessages : unsigned char{
         SystemExclusive,
         MIDITimeCodeQtrFrame,
@@ -759,23 +802,23 @@ void strcpy_P(const char*, const char*);
 
     inline const char* toString(SystemMessages n){
         switch (n) {
-            case SystemExclusive:  return "SystemExclusive";
-            case MIDITimeCodeQtrFrame:  return "MIDITimeCodeQtrFrame";
-            case SongPositionPointer:  return "SongPositionPointer";
-            case SongSelect:  return "SongSelect";
-            case Undefined0:  return "Undefined0";
-            case Undefined1:  return "Undefined1";
-            case TuneRequest:  return "TuneRequest";
-            case EndOfSysEx:  return "EndOfSysEx";
-            case TimingClock:  return "TimingClock";
-            case Undefined2:  return "Undefined2";
-            case Start:  return "Start";
-            case Continue:  return "Continue";
-            case Stop:  return "Stop";
-            case Undefined3:  return "Undefined3";
-            case ActiveSensing:  return "ActiveSensing";
-            case SystemReset:  return "SystemReset";
-            default: return "UNKNOWN_SYS_MSG";
+            case SystemExclusive:         strcpy_P(loadedString, PROGMEM_STRINGS::SystemExclusive);         return loadedString;
+            case MIDITimeCodeQtrFrame:    strcpy_P(loadedString, PROGMEM_STRINGS::MIDITimeCodeQtrFrame);    return loadedString;
+            case SongPositionPointer:     strcpy_P(loadedString, PROGMEM_STRINGS::SongPositionPointer);     return loadedString;
+            case SongSelect:              strcpy_P(loadedString, PROGMEM_STRINGS::SongSelect);              return loadedString;
+            case Undefined0:              strcpy_P(loadedString, PROGMEM_STRINGS::Undefined0);              return loadedString;
+            case Undefined1:              strcpy_P(loadedString, PROGMEM_STRINGS::Undefined1);              return loadedString;
+            case TuneRequest:             strcpy_P(loadedString, PROGMEM_STRINGS::TuneRequest);             return loadedString;
+            case EndOfSysEx:              strcpy_P(loadedString, PROGMEM_STRINGS::EndOfSysEx);              return loadedString;
+            case TimingClock:             strcpy_P(loadedString, PROGMEM_STRINGS::TimingClock);             return loadedString;
+            case Undefined2:              strcpy_P(loadedString, PROGMEM_STRINGS::Undefined2);              return loadedString;
+            case Start:                   strcpy_P(loadedString, PROGMEM_STRINGS::Start);                   return loadedString;
+            case Continue:                strcpy_P(loadedString, PROGMEM_STRINGS::Continue);                return loadedString;
+            case Stop:                    strcpy_P(loadedString, PROGMEM_STRINGS::Stop);                    return loadedString;
+            case Undefined3:              strcpy_P(loadedString, PROGMEM_STRINGS::Undefined3);              return loadedString;
+            case ActiveSensing:           strcpy_P(loadedString, PROGMEM_STRINGS::ActiveSensing);           return loadedString;
+            case SystemReset:             strcpy_P(loadedString, PROGMEM_STRINGS::SystemReset);             return loadedString;
+            default:                      strcpy_P(loadedString, PROGMEM_STRINGS::SYSMSG_DEFAULT);          return loadedString;;
         }
     }
 }
