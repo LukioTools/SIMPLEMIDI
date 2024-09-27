@@ -2,6 +2,9 @@
 
 #include "MIDIcommandByte.hpp"
 #include "MIDIenums.hpp"
+#ifndef ARDUINO
+#include <cstdint>
+#endif
 
 using fp_2_14 = unsigned short;
 namespace MIDI {
@@ -70,7 +73,7 @@ namespace MIDI {
     const char* toString(fp_2_14 fp){
         loadedNumber[0] = '0'+(fp>>14);
             //trust me bro
-        int fract = ((fp&0b0011111111111111) * 10000)/max;
+        uint32_t fract = (uint32_t(fp&0b0011111111111111) * 10000)/max;
         for(size_t i = 0; i < decimalPlaces; i++){
             loadedNumber[sizeof(loadedNumber)-2 - i] = '0' + fract%10;
             fract/=10;

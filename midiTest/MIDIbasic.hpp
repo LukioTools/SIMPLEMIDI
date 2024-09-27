@@ -1,5 +1,7 @@
+#include "MIDIenums.hpp"
 #pragma once
 #include "MIDIcommandByte.hpp"
+#include "MIDIsend.hpp"
 
 namespace MIDI {
     struct Basic : public CommandByte{
@@ -80,6 +82,7 @@ namespace MIDI {
                     printable.print(", Value: ");
                     printable.print(mData[1]);
                     printable.println(" }");
+                    return;
                 }
                 case ProgramChange: {
                     printable.print("ProgramChange[");
@@ -87,6 +90,7 @@ namespace MIDI {
                     printable.print("]{ Program: ");
                     printable.print(mData[0]);
                     printable.println(" }");
+                    return;
                 }
                 case ChannelAftertouch: {
                     printable.print("ChannelAftertouch[");
@@ -102,8 +106,9 @@ namespace MIDI {
                     printable.print("]{ FaderName: ");
                     printable.print(MCU::toString(static_cast<MCU::PitchBendMapping>(getChannel())));
                     printable.print(" Value: ");
-                    printable.print(getShort(mData[0], mData[1]));
+                    printable.print(toString(getShort(mData[0], mData[1])));
                     printable.println(" }");
+                    return;
                 }
                 case SystemMessage: {
                     printable.print("SystemMessage[");
@@ -113,6 +118,7 @@ namespace MIDI {
                     //printable.print(" Value: ");
                     //printable.print(mData[0]);
                     printable.println(" }");
+                    return;
                 }
             }
         }

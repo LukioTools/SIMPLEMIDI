@@ -95,7 +95,7 @@ namespace MIDI {
             NoteBtn(){}
             NoteBtn(t& _midi, unsigned char _channel, MCU::NoteMapping _note, unsigned char _velocity, unsigned char _input) : midi(_midi),channel(_channel),  note(_note), velocity(_velocity), input(_input){}
 
-            bool run(const char& _char){
+            virtual bool run(const char& _char){
                 if(input != _char) return true;
 
                 sendNoteON(midi, channel, note, velocity);
