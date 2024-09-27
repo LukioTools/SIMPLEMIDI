@@ -31,11 +31,6 @@ void setup() {
 }
 unsigned char i = 0;
 void loop() {
-    //Serial.println(MIDI::maxSize);
-    //Serial.println(MIDI::MCU::toString(static_cast<MIDI::MCU::NoteMapping>(i++)));
-    //if(119 < i)
-    //  i = 0;
-    //delay(100);
     
     if(USBMIDI.available()){
         if(!basic.read(USBMIDI)){
