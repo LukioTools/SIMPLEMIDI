@@ -69,6 +69,7 @@ void loop() {
         if(!basic.read(USBMIDI)){
             rotarty1.updateValue(basic);
         };
+        basic.read(USBMIDI);
     }
 
     if(Serial.available()){
