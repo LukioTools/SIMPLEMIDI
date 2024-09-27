@@ -1,0 +1,2 @@
+CompileFlags:
+  Add: [-std=c++11, -Wall, -ftemplate-depth=2048, -fconstexpr-backtrace-limit=128]

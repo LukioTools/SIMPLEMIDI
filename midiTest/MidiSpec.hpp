@@ -1,188 +1,115 @@
 #pragma once
 
+#include "MIDIenums.hpp"
+#include "MIDIsend.hpp"
+#include "MIDIbasic.hpp"
 
 namespace MIDI {
 
-    enum Command : unsigned char{
-        NoteOFF,
-        NoteON,
-        PolyphonicAftertouch,
-        ControlModeChange,
-        ProgramChange,
-        ChannelAftertouch,
-        PitchBendChange,
-        SystemMessage,
-    };
-
-    enum SystemMessages : unsigned char{
-        SystemExclusive,
-        MIDITimeCodeQtrFrame,
-        SongPositionPointer,
-        SongSelect,
-        Undefined0, 
-        Undefined1, 
-        TuneRequest,
-        EndOfSysEx,
-        TimingClock,
-        Undefined2, 
-        Start, 
-        Continue,
-        Stop,
-        Undefined3,
-        ActiveSensing, 
-        SystemReset, 
-    };
-
-    struct CommandByte{
-        unsigned char mCommandByte;
-        const char* getCommandName()const{
-            switch (getCommand()) {
-                case NoteOFF:                           return "NoteOFF";
-                case NoteON:                            return "NoteON";
-                case PolyphonicAftertouch:              return "PolyphonicAftertouch";
-                case PitchBendChange:                   return "PitchBendChange";
-                case ProgramChange:                     return "ProgramChange";
-                case ChannelAftertouch:                 return "ChannelAftertouch";
-                case ControlModeChange:                 return "ControlModeChange";
-
-                case SystemMessage: switch (getChannel()) {
-                        case SystemExclusive:           return "SystemMessage::SystemExclusive";
-                        case SongSelect:                return "SystemMessage::SongSelect";
-                        case SongPositionPointer:       return "SystemMessage::SongPositionPointer";
-                        case TuneRequest:               return "SystemMessage::TuneRequest";
-                        case EndOfSysEx:                return "SystemMessage::EndOfSysEx";
-                        case TimingClock:               return "SystemMessage::TimingClock";
-                        case Start:                     return "SystemMessage::Start";
-                        case Continue:                  return "SystemMessage::Continue";
-                        case Stop:                      return "SystemMessage::Stop";
-                        case ActiveSensing:             return "SystemMessage::ActiveSensing";
-                        case SystemReset:               return "SystemMessage::SystemReset";
-                        case MIDITimeCodeQtrFrame:      return "SystemMessage::MIDITimeCodeQtrFrame"; 
-                        case Undefined0: 
-                        case Undefined1: 
-                        case Undefined2:   
-                        case Undefined3:                return "SystemMessage::UNDEFINED";  
-                        default:
-                            break;
-                    }
-                default:
-                    return "UNKNOWN";
-            }
-            return "UNKNWON";
-        }
-
-        Command getCommand() const{
-            return static_cast<Command>((mCommandByte>>4) & 0b111);
-        }
-        unsigned char getChannel() const{
-            return mCommandByte & 0xF;
-        }
-        unsigned char getDataByteCount() const{
-            switch (getCommand()) {
-                case NoteOFF: 
-                case NoteON: 
-                case PolyphonicAftertouch:  
-                case PitchBendChange: return 2;
-
-                case ProgramChange: 
-                case ChannelAftertouch: return 1;
-
-                case ControlModeChange: return 2; // see spec
-
-                case SystemMessage: switch (getChannel()) {
-                        case SystemExclusive: return -1; // Variable
-                        case SongSelect:    return 1;
-                        case SongPositionPointer: return 2;
-                        case TuneRequest:  
-                        case EndOfSysEx:   
-                        case TimingClock:  
-                        case Start:        
-                        case Continue:     
-                        case Stop:         
-                        case ActiveSensing:
-                        case SystemReset:   return 0;
-
-                        case MIDITimeCodeQtrFrame: return -1; //see spec
-
-                        case Undefined0: 
-                        case Undefined1: 
-                        case Undefined2:   
-                        case Undefined3: return  -1;  
-                    }
-                default:
-                    return -1;
-            }
-        }
-        static Command getCommand(unsigned char mCommandByte){
-            return static_cast<Command>((mCommandByte>>4) & 0b111);
-        }
-        static unsigned char getChannel(unsigned char mCommandByte){
-            return mCommandByte & 0xF;
-        }
-    };
-
-    struct Basic : public CommandByte{
-        unsigned char mData[3];
-
-        unsigned char* begin(){
-            return mData;
-        }
-        unsigned char* end(){
-            return mData+3;
-        }
-    };
-
-
-    constexpr size_t ExclusiveMaxSize = 62;
-    constexpr unsigned char EOX = 0b11110111;
-
-    struct Exclusive : public CommandByte{
-        unsigned char mSize = 0;
-        unsigned char mData[ExclusiveMaxSize];
-
-        unsigned char* begin(){
-            return mData;
-        }
-        unsigned char* end(){
-            return mData+mSize;
-        }
-
-        inline unsigned char size(){
-            return mSize;
-        }
-        inline bool empty(){
-            return mSize == 0;
-        }
-
-        inline void clear(){
-            mSize = 0;
-        }
-            //returns 255? if error
-        inline unsigned char pop(){
-            if (mSize) {
-                return mData[mSize--];
-            }
-            return -1;
-        }
-
-        // midi.push_back(MIDIUSB.read()) 
-        inline void push_back(unsigned char c){
-            if(mSize < ExclusiveMaxSize-1){
-                mData[mSize++] = c;
-            }
-        }
-
-        // midi.emplace() = MIDIUSB.read()
-        inline unsigned char& emplace(){
-            if(mSize < ExclusiveMaxSize-1){
-                return mData[mSize++];
-            }
-            return mData[mSize];
-        }
-    };
-
-
-
     
 
+    namespace DeviceControl {
+        template<typename t>
+        struct NoteBtn{
+            bool lastState = false;
+            unsigned char channel;
+            MCU::NoteMapping note;
+            char velocity;
+            t& midi;
+            NoteBtn(){}
+            NoteBtn(t& _midi, unsigned char _channel, MCU::NoteMapping _note, unsigned char _velocity) : midi(_midi),channel(_channel),  note(_note), velocity(_velocity){}
+
+            bool run(const bool& _currentState){
+                if(_currentState == true && lastState == false){
+                    sendNoteON(midi, channel, note, velocity);
+                    midi.flush();
+                    lastState = true;
+                }else if(_currentState == false && lastState == true){
+                    lastState = false;
+                }
+
+                return false;
+            }
+        };
+
+        template<typename t>
+        struct NoteRotaryEncoder{
+            bool lastState = false;
+            int counter;
+            int lastCounter;
+            MCU::PitchBendMapping channel;
+
+            int resolution;
+
+            t& midi;
+            NoteRotaryEncoder(){}
+            NoteRotaryEncoder(t& _midi, MCU::PitchBendMapping _channel, int _resolution) : midi(_midi),channel(_channel), resolution(_resolution){}
+
+            void setCounter(){}
+
+
+            template<typename SerialT>
+            bool run(SerialT& Serial, const bool& aState, const bool& bState){
+
+                if(aState != lastState && aState == 1){
+                
+                    if(bState != aState){
+                        counter -= resolution;
+                    }else {
+                        counter += resolution;
+                    }
+
+                    if(counter < 0) counter = 0;
+                    if(counter > 16384) counter = 16384;
+
+                    Serial.print("channel ");
+                    Serial.print(channel);
+                    Serial.print(" counter ");
+                    Serial.println(counter);
+                    sendPitch(midi, channel, counter);
+                    midi.flush();
+                }
+
+                lastState = aState;
+                
+
+            }
+
+            void updateValue(Basic& basic){
+                if(basic.getCommand() == Command::PitchBendChange && basic.getChannel() == channel)
+                    counter = getShort(basic.mData[0], basic.mData[1]);
+            }
+        };
+    }
+
+    namespace SoftwareControl {
+        template<typename t>
+        struct NoteBtn{
+            unsigned char input;
+            unsigned char channel;
+            MCU::NoteMapping note;
+            char velocity;
+
+            t& midi;
+
+            NoteBtn(){}
+            NoteBtn(t& _midi, unsigned char _channel, MCU::NoteMapping _note, unsigned char _velocity, unsigned char _input) : midi(_midi),channel(_channel),  note(_note), velocity(_velocity), input(_input){}
+
+            bool run(const char& _char){
+                if(input != _char) return true;
+
+                sendNoteON(midi, channel, note, velocity);
+                midi.flush();
+
+                return false;
+            }
+        };
+    }
+
+    
+    
+
+    
+    
+    
 }
