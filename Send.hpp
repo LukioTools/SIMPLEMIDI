@@ -21,6 +21,7 @@
 #include "CommandByte.hpp"
 #include "Enums.hpp"
 #include "CableByte.hpp"
+#include "Event.hpp"
 #include "FP2_16.hpp"
 
 #ifndef ARDUINO
@@ -33,19 +34,13 @@ namespace MIDI {
         return v & 0b01111111;
     }
 
-    struct Output
-    {
-        uint8_t header;
-        uint8_t byte1;
-        uint8_t byte2;
-        uint8_t byte3;
-    };
+
 
     template<CodeIndex cin, Command cmd, typename MIDI_API>
     inline bool send(MIDI_API& midi, unsigned char dataByte1, unsigned char dataByte2, unsigned char channel = 0, unsigned char cable = 0){
-        return midi.write(Output{
-            CableByte(cin, cable).mCableByte,
-            CommandByte::make(cmd, channel).mCommandByte,
+        return midi.write(Event{
+            CableByte(cin, cable),
+            CommandByte::make(cmd, channel),
             capData(dataByte1),
             capData(dataByte2),
         });

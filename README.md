@@ -33,6 +33,16 @@ The Libary is implemented only for AVR board having native USB functionality (AT
 
 ## Bugs & features
 Feel free to open a new issue or do pull request. Fastest way to fix problem(s)/add feature(s) is pull request, as we are not committed on this project too much. Small changes or help can be done through issues.  
+## Functions available:
+|function|params|explanation|
+|--|--|--|
+|``MIDI_USB::begin``||starts the USB communication|
+|``MIDI_USB::poll``||receive data from USB and writes to buffer|
+|``MIDI_USB::read``||reads ``template T`` from buffer|
+|``MIDI_USB::peek``||reads ``template T`` from buffer, doesnt increment pointer|
+|``MIDI_USB::finalize``||is done automatically|
+|``MIDI_USB::write``|``Typename T data``|writes data to USB|
+|``MIDI_USB::flush``||flushes data|
 
 
 ## License
@@ -54,7 +64,7 @@ Pluggable USB based implementations use BSD License
 ### Read
 Read is a nonblocking call, that polls new data to buffer, if nececcary. If enough data is in the buffer, returns a casted pointer to the begining of the buffer, otherwise returns nullptr.
 <br>
-Read is most commonly used with types like [MIDI::Event](#event) or byte.
+Read is most commonly used with types like [`MIDI::Event`](#event) or byte.
 
 #### Example
 ```c++
@@ -68,18 +78,22 @@ while(Event* event = midi.read<Event>()){
 ### Write
 Write is an unbuffered call to write specified data to the usb buffer. 
 <br>
-Write is most commonly used with types like [MIDI::Event](#event). Normally write is unnececcary due to the precence of `MIDI::send*` group of functions
+Write is most commonly used with types like [`MIDI::Event`](#event). Normally write is unnececcary due to the precence of `MIDI::send*` group of functions
 
 #### Example
 ```c++
 Event ev(...); 
 midi.write(ev); // midi is a created MIDI_USB instance
-    //or
-MIDI::sendNoteON(midi, ...); // MIDI::send* family of functions are also a great way of sending midi data
+    //or using pointer interface
+char* data = ...;
+size_t dataSize = ...;
+midi.write(data, dataSize); // midi is a created MIDI_USB instance
+    //MIDI::send* family of functions are also a great way of sending midi data
+MIDI::sendNoteON(midi, ...);
 ```
 ## Event
 
-Event is a type that contains midi event data. Usually used for input, but can be used as output using the [MIDI_USB::Write](#write) method
+Event is a type that contains midi event data. Usually used for input, but can be used as output using the [`MIDI_USB::Write`](#write) method
 
 #### Example
 
