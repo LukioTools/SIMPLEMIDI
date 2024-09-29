@@ -1,6 +1,6 @@
 # SIMPLEMIDI for Arduino
 
-as the title says... simple MIDI library for Arduino
+as the title says... simple MIDI library for Arduino. The library also has support for MCU (Mackie Control Universal protocol)
 
 ## Quick start
 
@@ -108,3 +108,26 @@ Event is a type that contains midi event data. Usually used for input, but can b
 Event* event = midi.read<Event>();
 Event& ev = *event;
 ```
+
+## Enums
+Referenced from https://github.com/NicoG60/TouchMCU/blob/main/doc/mackie_control_protocol.md
+|namespace|Enum|Explanation|
+|--|--|--|
+|MIDI::MCU|NoteMapping|Note mapping (used for MCU commands) (play, pause, etc)|
+|MIDI::MCU|PitchBendMapping| PitchBend mapping (used for MCU commands) (sliders, etc.)|
+|MIDI::MCU|ControlMapping| Control mapping (used for MCU commands) (potentiometer and led ring)|
+|MIDI::MCU|ChannelpressureMapping| no clue|
+|MIDI|Command| command (Note off, etc)|
+|MIDI|SystemMessage|tells what kinda of system message it is|
+
+
+## Debugging
+If you like to debug the midi events you have to define `MIDI_PRINT` before including the SIMPLEMIDI library.
+<br>
+
+```c++
+#define MIDI_PRINT 1
+#include <SIMPLEMIDI.h>
+```
+
+This will include add strings used in debugging and a method `Event::print(T printable)` (usually passed `Serial`) Be careful this will increase program memory usage a lot!  

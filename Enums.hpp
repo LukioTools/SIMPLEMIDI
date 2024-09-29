@@ -617,6 +617,7 @@ namespace MIDI {
 
             FADER_POSITION_MASTER = 8,
         };
+        
         enum ControlMapping : unsigned char{
             VPOT_ROTATION0 = 16,
             VPOT_ROTATION1,
