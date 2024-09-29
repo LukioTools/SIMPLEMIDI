@@ -5,7 +5,6 @@
 #ifndef PROGMEM
 #define PROGMEM 
 #endif
-using size_t = unsigned short;
 #endif
 
 #define FP_2_14_MAX 16384

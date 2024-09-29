@@ -4,7 +4,6 @@
 
 #ifndef ARDUINO
 #define PROGMEM 
-using size_t = unsigned short;
 void strcpy_P(const char*, const char*);
 #endif
 

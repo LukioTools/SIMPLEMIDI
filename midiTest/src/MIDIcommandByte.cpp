@@ -50,3 +50,10 @@ unsigned char CommandByte::getDataByteCount() const{
             return -1;
     }
 }
+
+Command CommandByte::getCommand(unsigned char mCommandByte){
+    return static_cast<Command>((mCommandByte>>4) & 0b111);
+}
+unsigned char CommandByte::getChannel(unsigned char mCommandByte){
+    return mCommandByte & 0xF;
+}

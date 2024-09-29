@@ -1,11 +1,7 @@
 #pragma once
 
 #include <stdint.h>
-#include "MIDICableByte.hpp"
-#include "MIDIcommandByte.hpp"
-#include "MIDIfp2_16.hpp"
-
-#include "MIDIenums.hpp"
+#include "../lib/Event.hpp"
 
 
 namespace MIDI {
