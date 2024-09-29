@@ -4,17 +4,17 @@ as the title says... simple MIDI library for Arduino
 
 ## Quick start
 
-1. Clone this repository and put into ``arduino/libraries`` folder.
+1. Clone this repository and put into `arduino/libraries` folder.
 
-2. Add ```#include <SIMPLEMIDI.h>``` to your project.
+2. Add `#include <SIMPLEMIDI.h>` to your project.
 
-3. Create an ``MIDI_USB`` instance.
+3. Create an `MIDI_USB` instance.
 
-4. Use the ``begin`` method in ``setup()``
+4. Use the `begin` method in `setup()`
 
-4. Use the ``MIDI_USB::begin()`` method in ``setup()``
+4. Use the `MIDI_USB::begin()` method in `setup()`
 
-5. Read using the ` T* MIDI_USB::read<T>() ` method. Returns nullptr, if not enough data was available for the size of your structure. Read polls automaticly if needed, but doesnt block.
+5. Read using the ` T* MIDI_USB::read<T>() ` method. Returns nullptr, if not enough data was available for the size of your structure. Read polls automatically if needed, but doesn't block.
 
 6. Write using the `size_t MIDI_USB::write<T>(const T&)` method or using the `MIDI::send*` group of functions
 
@@ -23,13 +23,13 @@ as the title says... simple MIDI library for Arduino
 ## Benefits
 This library has been inspired (copied) from MIDIUSB (made by Arduino) and USBMIDI made by BlokasLabs. 
 <br>
-USBMIDI has major flaw: other usb libraries do not work at the same time on Windows. For example ``<Keyboard.h>`` does not work. in other hand, MIDIUSB is over simplified and isn't able to give one byte at the time. But does support ``<Keyboard.h>`` on Windows. (both work on Linux)
+USBMIDI has major flaw: other USB libraries do not work at the same time on Windows. For example, ``<Keyboard.h>`` does not work. in other hand, MIDIUSB is over simplified and isn't able to give one byte at the time. But does support ``<Keyboard.h>`` on Windows. (both work on Linux)
 
-SIMPLEMIDI is designed to work with other libraries unlike the USMIDI on both Windows and Linux. We don't know the situation on MAC. This libary has input buffer, so you can read or write in any size. ``T t = read<T>()`` and ``write(T)`` where T is your datatype. further information [here](#midi_usb).
+SIMPLEMIDI is designed to work with other libraries unlike the USMIDI on both Windows and Linux. We don't know the situation on MAC. This library  has input buffer, so you can read or write in any size. `T t = read<T>()` and `write(T)` where T is your datatype. further information [here](#midi_usb).
 
 
 ## Supported Devices
-The Libary is implemented only for AVR board having native USB functionality (ATMEGA32u4, arduino leonardo, micro pro, and similar devices). Software USB isn't supported.
+The library  is implemented only for AVR board having native USB functionality (ATMEGA32u4, arduino leonardo, micro pro, and similar devices). Software USB isn't supported.
 
 ## Bugs & features
 Feel free to open a new issue or do pull request. Fastest way to fix problem(s)/add feature(s) is pull request, as we are not committed on this project too much. Small changes or help can be done through issues.  
