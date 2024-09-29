@@ -123,11 +123,19 @@ Referenced from https://github.com/NicoG60/TouchMCU/blob/main/doc/mackie_control
 
 ## Debugging
 If you like to debug the midi events you have to define `MIDI_PRINT` before including the SIMPLEMIDI library.
-<br>
-
+#### example
 ```c++
 #define MIDI_PRINT 1
 #include <SIMPLEMIDI.h>
 ```
 
 This will include add strings used in debugging and a method `Event::print(T printable)` (usually passed `Serial`) Be careful this will increase program memory usage a lot!  
+
+#### example
+```c++
+    Event* event = midi.read<Event>();
+    event->print(Serial);
+```
+```
+==> NoteOFF[0]{ Note: REC1, Velocity: 0 }
+```
