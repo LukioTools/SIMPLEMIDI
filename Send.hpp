@@ -1,9 +1,9 @@
 #pragma once
 
-#include "MIDIcommandByte.hpp"
-#include "MIDIenums.hpp"
-#include "MIDICableByte.hpp"
-#include "MIDIfp2_16.hpp"
+#include "CommandByte.hpp"
+#include "Enums.hpp"
+#include "CableByte.hpp"
+#include "FP2_16.hpp"
 
 #ifndef ARDUINO
 #include <cstdint>

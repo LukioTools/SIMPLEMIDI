@@ -1,9 +1,9 @@
 #pragma once
 
-#include "MIDIenums.hpp"
-#include "MIDIfp2_16.hpp"
-#include "MIDIsend.hpp"
-#include "MIDIbasic.hpp"
+#include "Enums.hpp"
+#include "FP2_16.hpp"
+#include "Send.hpp"
+#include "Event.hpp"
 
 namespace MIDI {
 
