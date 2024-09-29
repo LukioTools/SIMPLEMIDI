@@ -33,29 +33,21 @@ The Libary is implemented only for AVR board having native USB functionality (AT
 
 ## Bugs & features
 Feel free to open a new issue or do pull request. Fastest way to fix problem(s)/add feature(s) is pull request, as we are not committed on this project too much. Small changes or help can be done through issues.  
-## Functions available:
-|function|params|explanation|
-|--|--|--|
-|``MIDI_USB::begin``||starts the USB communication|
-|``MIDI_USB::poll``||receive data from USB and writes to buffer|
-|``MIDI_USB::read``||reads ``template T`` from buffer|
-|``MIDI_USB::peek``||reads ``template T`` from buffer, doesnt increment pointer|
-|``MIDI_USB::finalize``||is done automatically|
-|``MIDI_USB::write``|``Typename T data``|writes data to USB|
-|``MIDI_USB::flush``||flushes data|
+
 
 
 ## License
 Pluggable USB based implementations use BSD License
 
-## DOCUMENTATION: MIDI_USB
+## MIDI_USB
 
 ### Functions available:
 |function|params|explanation|
 |--|--|--|
 |``MIDI_USB::begin``||starts the USB communication|
 |``MIDI_USB::poll``||receive data from USB and writes to buffer|
-|[``MIDI_USB::read``](#read)||reads ``Template T`` from buffer|
+|[``MIDI_USB::read``](#read)||reads ``template T`` from buffer|
+|``MIDI_USB::peek``||reads ``template T`` from buffer, doesnt increment pointer|
 |``MIDI_USB::finalize``||is done automatically|
 |[``MIDI_USB::write``](#write)|``Typename T data``|writes data to USB|
 |``MIDI_USB::flush``||flushes data|
