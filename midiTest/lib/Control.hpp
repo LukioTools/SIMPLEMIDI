@@ -47,8 +47,8 @@ namespace SoftwareControl {
         t& midi;
 
         NoteBtn();
-        NoteBtn(t& _midi, unsigned char _channel, MCU::NoteMapping _note, unsigned char _velocity, unsigned char _input) : midi(_midi),channel(_channel),  note(_note), velocity(_velocity), input(_input){}
+        NoteBtn(t& _midi, unsigned char _channel, MCU::NoteMapping _note, unsigned char _velocity, unsigned char _input);
 
-        virtual bool run(const char& _char);
+        bool run(const char& _char);
     };
 }

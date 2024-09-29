@@ -71,9 +71,12 @@ namespace SoftwareControl {
 
     template<typename T>
     NoteBtn<T>::NoteBtn(){}
-    NoteBtn(t& _midi, unsigned char _channel, MCU::NoteMapping _note, unsigned char _velocity, unsigned char _input) : midi(_midi),channel(_channel),  note(_note), velocity(_velocity), input(_input){}
 
-    virtual bool run(const char& _char){
+    template<typename T>
+    NoteBtn<T>::NoteBtn(T& _midi, unsigned char _channel, MCU::NoteMapping _note, unsigned char _velocity, unsigned char _input) : midi(_midi),channel(_channel),  note(_note), velocity(_velocity), input(_input){}
+
+    template<typename T>
+    bool NoteBtn<T>::run(const char& _char){
         if(input != _char) return true;
 
         sendNoteON(midi, channel, note, velocity);
