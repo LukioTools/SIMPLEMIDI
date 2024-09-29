@@ -29,9 +29,9 @@ void setup() {
 
 void loop() {
     
-    while (byte* rx = MidiUSB.read<byte>()) {
-        //Serial.print("data ");
-        //Serial.println(*rx);
+    while (MIDI::Event* rx = MidiUSB.read<MIDI::Event>()) {
+        rx->print(Serial);
+        slider1.updateValue(*rx);
     }
 
     if(Serial.available()){
@@ -39,8 +39,6 @@ void loop() {
         Keyboard.write(c+1);
     }
 
-    //MidiUSB.write();
-    //MidiUSB.flush();
     playBtn.run(digitalRead(PLAYBTN));
     slider1.run(digitalRead(SLIDER1_CLK), digitalRead(SLIDER1_DT));
 }

@@ -250,7 +250,6 @@ struct USBBuffer{
         }
 
         midipacket midiEvent;
-        Serial.println(mEnd);
         int c = USB_Recv(usb_endpoint, end(), available());
         if(c > 0)
             increase(c);
@@ -330,7 +329,6 @@ public:
     template<typename T>
     size_t write(const T& data){
         if(!is_write_enabled(MIDI_TX)) return 0;        // in case no one is listening we are just going to drop packets, USB_Send might freeze in case no one listens.
-        Serial.println(sizeof(data));
         int  r = USB_Send(MIDI_TX, &data, sizeof(data));       // return amount sent.
 
         return r;

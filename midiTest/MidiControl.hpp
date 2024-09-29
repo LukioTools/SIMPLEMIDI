@@ -19,7 +19,6 @@ namespace MIDI {
 
             bool run(const bool& _currentState){
                 if(_currentState == true && lastState == false){
-                    Serial.println("writing...");
                     sendNoteON(midi, channel, note, velocity);
                     midi.flush();
                     lastState = true;
@@ -60,10 +59,6 @@ namespace MIDI {
                     if(counter < 0) counter = 0;
                     if(counter > 16384) counter = 16384;
 
-                    Serial.print("channel ");
-                    Serial.print(channel);
-                    Serial.print(" counter ");
-                    Serial.println(counter);
                     sendPitch(midi, channel, counter);
                     midi.flush();
                 }
@@ -73,9 +68,9 @@ namespace MIDI {
 
             }
 
-            void updateValue(Basic& basic){
+            void updateValue(Event& basic){
                 if(basic.getCommand() == Command::PitchBendChange && basic.getChannel() == channel)
-                    counter = getShort(basic.mData[0], basic.mData[1]);
+                    counter = basic.dataToFixed();
             }
         };
     }
