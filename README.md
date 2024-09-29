@@ -51,7 +51,7 @@ Pluggable USB based implementations use BSD License
 ### Read
 Read is a nonblocking call, that polls new data to buffer, if nececcary. If enough data is in the buffer, returns a casted pointer to the begining of the buffer, otherwise returns nullptr.
 <br>
-Read is most commonly used with types like [MIDI::Event](#event) or byte.
+Read is most commonly used with types like [`MIDI::Event`](#event) or byte.
 
 #### Example
 ```c++
@@ -65,7 +65,7 @@ while(Event* event = midi.read<Event>()){
 ### Write
 Write is an unbuffered call to write specified data to the usb buffer. 
 <br>
-Write is most commonly used with types like [MIDI::Event](#event). Normally write is unnececcary due to the precence of `MIDI::send*` group of functions
+Write is most commonly used with types like [`MIDI::Event`](#event). Normally write is unnececcary due to the precence of `MIDI::send*` group of functions
 
 #### Example
 ```c++
@@ -80,7 +80,7 @@ MIDI::sendNoteON(midi, ...);
 ```
 ## Event
 
-Event is a type that contains midi event data. Usually used for input, but can be used as output using the [MIDI_USB::Write](#write) method
+Event is a type that contains midi event data. Usually used for input, but can be used as output using the [`MIDI_USB::Write`](#write) method
 
 #### Example
 
