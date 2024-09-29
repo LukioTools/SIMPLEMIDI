@@ -71,7 +71,11 @@ Write is most commonly used with types like [MIDI::Event](#event). Normally writ
 ```c++
 Event ev(...); 
 midi.write(ev); // midi is a created MIDI_USB instance
-    //or
+    //or using pointer interface
+char* data = ...;
+size_t dataSize = ...;
+midi.write(data, dataSize); // midi is a created MIDI_USB instance
+    //or using MIDI::send*
 MIDI::sendNoteON(midi, ...); // MIDI::send* family of functions are also a great way of sending midi data
 ```
 ## Event
