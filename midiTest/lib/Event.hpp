@@ -1,16 +1,4 @@
-#pragma once
-
-#include <stdint.h>
-#include "MIDICableByte.hpp"
-#include "MIDIcommandByte.hpp"
-#include "MIDIfp2_16.hpp"
-
-#include "MIDIenums.hpp"
-
-
-namespace MIDI {
-
-    // represents 4 decimal places
+// represents 4 decimal places
     struct Event : public CableByte, public CommandByte{
 
         Event(const CableByte cableByte = {}, const CommandByte commandByte = {}, const uint8_t byte1 = 0, const uint8_t byte2 = 0): 
@@ -138,5 +126,3 @@ namespace MIDI {
         }
 
     };
-
-}

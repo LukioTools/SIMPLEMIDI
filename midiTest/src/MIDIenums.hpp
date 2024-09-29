@@ -1,7 +1,6 @@
 #pragma once
+//Define MIDI_PRINT to enable support for enum stringifying functions 
 
-
-namespace MIDI {
 
 #ifndef ARDUINO
 #define PROGMEM 
@@ -9,6 +8,11 @@ using size_t = unsigned short;
 void strcpy_P(const char*, const char*);
 #endif
 
+
+namespace MIDI {
+
+
+#ifdef MIDI_PRINT
 
     namespace PROGMEM_STRINGS {
         constexpr const char REC1[]                     PROGMEM = "REC1";
@@ -437,7 +441,7 @@ void strcpy_P(const char*, const char*);
     constexpr size_t maxSize = 20;
     #endif
     char loadedString[maxSize + 1] = {0}; 
-
+#endif
 
     namespace MCU {
         enum NoteMapping : unsigned char{
@@ -581,6 +585,66 @@ void strcpy_P(const char*, const char*);
             RELAY_CLICK2,
             RELAY_CLICK3,
         };
+
+            //channel
+        enum PitchBendMapping : unsigned char{
+            FADER_POSITION0 = 0,
+            FADER_POSITION1,
+            FADER_POSITION2,
+            FADER_POSITION3,
+            FADER_POSITION4,
+            FADER_POSITION5,
+            FADER_POSITION6,
+            FADER_POSITION7,
+
+            FADER_POSITION_MASTER = 8,
+        };
+        enum ControlMapping : unsigned char{
+            VPOT_ROTATION0 = 16,
+            VPOT_ROTATION1,
+            VPOT_ROTATION2,
+            VPOT_ROTATION3,
+            VPOT_ROTATION4,
+            VPOT_ROTATION5,
+            VPOT_ROTATION6,
+            VPOT_ROTATION7,
+            VPOT_ROTATION8,
+
+            EXTERNAL_CONTROL = 46,
+
+            VPOT_LED_RING0 = 48,
+            VPOT_LED_RING1,
+            VPOT_LED_RING2,
+            VPOT_LED_RING3,
+            VPOT_LED_RING4,
+            VPOT_LED_RING5,
+            VPOT_LED_RING6,
+            VPOT_LED_RING7,
+            VPOT_LED_RING8,
+
+            JOG_WHEEL = 60,
+
+            TIMECODE_DIGIT0 = 64,
+            TIMECODE_DIGIT1,
+            TIMECODE_DIGIT2,
+            TIMECODE_DIGIT3,
+            TIMECODE_DIGIT4,
+            TIMECODE_DIGIT5,
+            TIMECODE_DIGIT6,
+            TIMECODE_DIGIT7,
+            TIMECODE_DIGIT8,
+            TIMECODE_DIGIT9,
+
+            ASSIGNMENT_DIGIT1= 74,
+            ASSIGNMENT_DIGIT2= 75,
+            
+        };
+
+        enum ChannelPressureMapping : unsigned char{
+            METERING = 0,
+        };
+
+#ifdef MIDI_PRINT
         inline const char* toString(NoteMapping n){
             switch (n) {
                 case REC1:                 strcpy_P(loadedString, PROGMEM_STRINGS::REC1); return loadedString;
@@ -706,48 +770,6 @@ void strcpy_P(const char*, const char*);
                 default:                   strcpy_P(loadedString, PROGMEM_STRINGS::KEY_DEFAULT); return loadedString;
             }
         }
-
-        enum ControlMapping : unsigned char{
-            VPOT_ROTATION0 = 16,
-            VPOT_ROTATION1,
-            VPOT_ROTATION2,
-            VPOT_ROTATION3,
-            VPOT_ROTATION4,
-            VPOT_ROTATION5,
-            VPOT_ROTATION6,
-            VPOT_ROTATION7,
-            VPOT_ROTATION8,
-
-            EXTERNAL_CONTROL = 46,
-
-            VPOT_LED_RING0 = 48,
-            VPOT_LED_RING1,
-            VPOT_LED_RING2,
-            VPOT_LED_RING3,
-            VPOT_LED_RING4,
-            VPOT_LED_RING5,
-            VPOT_LED_RING6,
-            VPOT_LED_RING7,
-            VPOT_LED_RING8,
-
-            JOG_WHEEL = 60,
-
-            TIMECODE_DIGIT0 = 64,
-            TIMECODE_DIGIT1,
-            TIMECODE_DIGIT2,
-            TIMECODE_DIGIT3,
-            TIMECODE_DIGIT4,
-            TIMECODE_DIGIT5,
-            TIMECODE_DIGIT6,
-            TIMECODE_DIGIT7,
-            TIMECODE_DIGIT8,
-            TIMECODE_DIGIT9,
-
-            ASSIGNMENT_DIGIT1= 74,
-            ASSIGNMENT_DIGIT2= 75,
-            
-        };
-
         inline const char* toString(ControlMapping n){
             switch (n) {
                 case VPOT_ROTATION0:       strcpy_P(loadedString, PROGMEM_STRINGS::VPOT_ROTATION0);     return loadedString;
@@ -785,21 +807,6 @@ void strcpy_P(const char*, const char*);
                 default: strcpy_P(loadedString, PROGMEM_STRINGS::CONTROL_DEFAULT);                      return loadedString;
             }
         }
-
-            //channel
-        enum PitchBendMapping : unsigned char{
-            FADER_POSITION0 = 0,
-            FADER_POSITION1,
-            FADER_POSITION2,
-            FADER_POSITION3,
-            FADER_POSITION4,
-            FADER_POSITION5,
-            FADER_POSITION6,
-            FADER_POSITION7,
-
-            FADER_POSITION_MASTER = 8,
-        };
-
         inline const char* toString(PitchBendMapping n){
             switch (n) {
                 case FADER_POSITION0:           strcpy_P(loadedString, PROGMEM_STRINGS::FADER_POSITION0); return loadedString;
@@ -814,16 +821,14 @@ void strcpy_P(const char*, const char*);
                 default:                        strcpy_P(loadedString, PROGMEM_STRINGS::FADER_DEFAULT); return loadedString;
             }
         }
-
-        enum ChannelPressureMapping : unsigned char{
-            METERING = 0,
-        };
         inline const char* toString(ChannelPressureMapping n){
             switch (n) {
                 case METERING:                  strcpy_P(loadedString, PROGMEM_STRINGS::METERING);          return loadedString;
                 default:                        strcpy_P(loadedString, PROGMEM_STRINGS::METERING_DEFAULT);  return loadedString;
             }
         }
+#endif
+
     }
 
     enum Command : unsigned char{
@@ -836,21 +841,6 @@ void strcpy_P(const char*, const char*);
         PitchBendChange,
         SystemMessage,
     };
-
-    const char* toString(Command n){
-        switch (n) {
-            case NoteOFF:              strcpy_P(loadedString, PROGMEM_STRINGS::NoteOFF); return loadedString; 
-            case NoteON:               strcpy_P(loadedString, PROGMEM_STRINGS::NoteON); return loadedString; 
-            case PolyphonicAftertouch: strcpy_P(loadedString, PROGMEM_STRINGS::PolyphonicAftertouch); return loadedString; 
-            case ControlModeChange:    strcpy_P(loadedString, PROGMEM_STRINGS::ControlModeChange); return loadedString; 
-            case ProgramChange:        strcpy_P(loadedString, PROGMEM_STRINGS::ProgramChange); return loadedString; 
-            case ChannelAftertouch:    strcpy_P(loadedString, PROGMEM_STRINGS::ChannelAftertouch); return loadedString; 
-            case PitchBendChange:      strcpy_P(loadedString, PROGMEM_STRINGS::PitchBendChange); return loadedString; 
-            case SystemMessage:        strcpy_P(loadedString, PROGMEM_STRINGS::SystemMessage); return loadedString; 
-            default:                    strcpy_P(loadedString, PROGMEM_STRINGS::COMMAND_DEFAULT); return loadedString; 
-
-        }
-    }
 
     enum SystemMessages : unsigned char{
         SystemExclusive,
@@ -871,6 +861,21 @@ void strcpy_P(const char*, const char*);
         SystemReset, 
     };
 
+#ifdef MIDI_PRINT
+    const char* toString(Command n){
+        switch (n) {
+            case NoteOFF:              strcpy_P(loadedString, PROGMEM_STRINGS::NoteOFF); return loadedString; 
+            case NoteON:               strcpy_P(loadedString, PROGMEM_STRINGS::NoteON); return loadedString; 
+            case PolyphonicAftertouch: strcpy_P(loadedString, PROGMEM_STRINGS::PolyphonicAftertouch); return loadedString; 
+            case ControlModeChange:    strcpy_P(loadedString, PROGMEM_STRINGS::ControlModeChange); return loadedString; 
+            case ProgramChange:        strcpy_P(loadedString, PROGMEM_STRINGS::ProgramChange); return loadedString; 
+            case ChannelAftertouch:    strcpy_P(loadedString, PROGMEM_STRINGS::ChannelAftertouch); return loadedString; 
+            case PitchBendChange:      strcpy_P(loadedString, PROGMEM_STRINGS::PitchBendChange); return loadedString; 
+            case SystemMessage:        strcpy_P(loadedString, PROGMEM_STRINGS::SystemMessage); return loadedString; 
+            default:                    strcpy_P(loadedString, PROGMEM_STRINGS::COMMAND_DEFAULT); return loadedString; 
+
+        }
+    }
     inline const char* toString(SystemMessages n){
         switch (n) {
             case SystemExclusive:         strcpy_P(loadedString, PROGMEM_STRINGS::SystemExclusive);         return loadedString;
@@ -892,4 +897,5 @@ void strcpy_P(const char*, const char*);
             default:                      strcpy_P(loadedString, PROGMEM_STRINGS::SYSMSG_DEFAULT);          return loadedString;;
         }
     }
+#endif
 }

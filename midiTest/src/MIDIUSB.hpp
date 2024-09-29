@@ -195,5 +195,3 @@ public:
     }
 
 };
-
-extern MIDI_USB MidiUSB;
