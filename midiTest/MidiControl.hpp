@@ -47,8 +47,7 @@ namespace MIDI {
             void setCounter(){}
 
 
-            template<typename SerialT>
-            bool run(SerialT& Serial, const bool& aState, const bool& bState){
+            bool run(const bool& aState, const bool& bState){
 
                 if(aState != lastState && aState == 1){
                 

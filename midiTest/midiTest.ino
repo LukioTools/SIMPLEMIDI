@@ -4,7 +4,7 @@
 #include "MIDIUSB.hpp"
 #include "Keyboard.h"
 
-#include "MidiSpec.hpp"
+#include "MidiControl.hpp"
 
 
 MIDI_USB MidiUSB;
@@ -30,8 +30,8 @@ void setup() {
 void loop() {
     
     while (byte* rx = MidiUSB.read<byte>()) {
-        Serial.print("data ");
-        Serial.println(*rx);
+        //Serial.print("data ");
+        //Serial.println(*rx);
     }
 
     if(Serial.available()){
@@ -42,5 +42,5 @@ void loop() {
     //MidiUSB.write();
     //MidiUSB.flush();
     playBtn.run(digitalRead(PLAYBTN));
-    slider1.run(Serial, digitalRead(SLIDER1_CLK), digitalRead(SLIDER1_DT));
+    slider1.run(digitalRead(SLIDER1_CLK), digitalRead(SLIDER1_DT));
 }
