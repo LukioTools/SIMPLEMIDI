@@ -42,6 +42,9 @@
 
 #include "USBBuffer.hpp"
 
+#ifndef USB_EP_SIZE
+#define USB_EP_SIZE 64
+#endif
 
 #define MIDI_AC_INTERFACE 	pluggedInterface	// MIDI AC Interface
 #define MIDI_INTERFACE 		((uint8_t)(pluggedInterface+1))
@@ -182,7 +185,6 @@ struct MIDIDescriptor {
 };
 
 
-USBBuffer<USB_EP_SIZE> midi_rx_buffer;
 
 
 class MIDI_USB : public PluggableUSBModule{
@@ -190,6 +192,9 @@ class MIDI_USB : public PluggableUSBModule{
 
 
 protected:
+		//let bro vibe here
+	USBBuffer<USB_EP_SIZE> midi_rx_buffer;
+
     int getInterface(uint8_t* interfaceNum) override {
         *interfaceNum += 2;	// uses 2 interfaces
         MIDIDescriptor _midiInterface =
@@ -242,8 +247,14 @@ public:
 
     template<typename T>
     T* read() {
-        return midi_rx_buffer.read<T>(MIDI_RX);
+		return midi_rx_buffer.read<T>();
     }
+
+	template<typename T>
+    T* peek() {
+		return midi_rx_buffer.peek<T>();
+    }
+
 
     void flush(){
         USB_Flush(MIDI_TX);

@@ -64,28 +64,8 @@ struct USBBuffer{
     }
 
     template<typename T>
-    T* read(uint8_t usb_endpoint){
-        auto p = peek<T>(usb_endpoint);
-        if(p)
-            mBegin+=sizeof(T);
-        return p;
-    }
-
-    template<typename T>
     T* peek(){
         if(sizeof(T) > size()) return nullptr;
-        T* t = reinterpret_cast<T*>(begin());
-        return t;
-    }
-
-    template<typename T>
-    T* peek(uint8_t usb_endpoint){
-        if(sizeof(T) > size()){
-            readUSB(usb_endpoint);
-            
-            if(sizeof(T) > size()) 
-                return nullptr;
-        } 
         T* t = reinterpret_cast<T*>(begin());
         return t;
     }
