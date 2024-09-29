@@ -1,11 +1,10 @@
 #pragma once
 
 #include <stdint.h>
-#include "MIDICableByte.hpp"
-#include "MIDIcommandByte.hpp"
-#include "MIDIfp2_16.hpp"
+#include "CableByte.hpp"
+#include "CommandByte.hpp"
+#include "FP2_16.hpp"
 
-#include "MIDIenums.hpp"
 
 
 namespace MIDI {
@@ -34,6 +33,8 @@ namespace MIDI {
         }
 
 #ifdef MIDI_PRINT
+#include "Enums.hpp"
+
             //does not print cable byte
         template<typename T>
         void print(T& printable){

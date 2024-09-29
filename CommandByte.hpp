@@ -1,6 +1,6 @@
 #pragma once
 
-#include "MIDIenums.hpp"
+#include "Enums.hpp"
 
 namespace MIDI {
 
