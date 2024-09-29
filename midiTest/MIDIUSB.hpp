@@ -163,8 +163,17 @@ struct MIDIDescriptor {
 };
 
 
+struct midipacket{
+    uint8_t m_event;
+	uint8_t m_data[3];
+};
+
+template <int Tsize>
 struct USBBuffer{
-    uint8_t event[USB_EP_SIZE];
+    uint8_t event[Tsize];
+    // [0,0,0,0,0]
+    //  |
+    //  
 
     uint8_t mBegin = 0;
     uint8_t mEnd = 0;
@@ -185,13 +194,28 @@ struct USBBuffer{
     
     template<typename T>
     T* read(){
-        if(sizeof(T) < size()) return nullptr;
+        if(sizeof(T) > size()) return nullptr;
+        T* t = reinterpret_cast<T*>(begin());
+        mBegin+=sizeof(T);
+        return t;
+    }
+
+    template<typename T>
+    T* read(uint8_t usb_endpoint){
+        if(sizeof(T) > size()){
+            readUSB(usb_endpoint);
+            
+            if(sizeof(T) > size()) 
+                return nullptr;
+        } 
         T* t = reinterpret_cast<T*>(begin());
         mBegin+=sizeof(T);
         return t;
     }
 
     void finalize(){
+        if(mBegin == 0) return;
+
         uint8_t s = size();
         for (int i = 0; i < s; i++) {
             event[i] = event[mBegin+i];
@@ -200,19 +224,29 @@ struct USBBuffer{
         mEnd = s;
     }
 
+    int available(){
+        return USB_EP_SIZE - mEnd;
+    }
+
     
     int readUSB(uint8_t usb_endpoint){
+        finalize();
         if(!USB_Available(usb_endpoint)) {
             return 0;
         }
-        int c = USB_Recv(usb_endpoint, end(), USB_EP_SIZE-mEnd);
-        increase(c);
+
+        midipacket midiEvent;
+        Serial.println(mEnd);
+        int c = USB_Recv(usb_endpoint, end(), available());
+        if(c > 0)
+            increase(c);
+        
         return c;
     }
 
 };
 
-USBBuffer midi_rx_buffer;
+USBBuffer<USB_EP_SIZE> midi_rx_buffer;
 
 
 class MIDI_USB : public PluggableUSBModule{
@@ -221,7 +255,7 @@ class MIDI_USB : public PluggableUSBModule{
 
 protected:
     int getInterface(uint8_t* interfaceNum) override {
-        interfaceNum[0] += 2;	// uses 2 interfaces
+        *interfaceNum += 2;	// uses 2 interfaces
         MIDIDescriptor _midiInterface =
         {
             D_IAD(MIDI_AC_INTERFACE, 2, MIDI_AUDIO, MIDI_AUDIO_CONTROL, 0),
@@ -272,20 +306,20 @@ public:
 
     template<typename T>
     T* read() {
-        return midi_rx_buffer.read<T>();
+        return midi_rx_buffer.read<T>(MIDI_RX);
     }
 
     void flush(){
         USB_Flush(MIDI_TX);
     }
 
-    size_t write(const uint8_t *buffer, size_t size){
+    template<typename T>
+    size_t write(const T& data){
         if(!is_write_enabled(MIDI_TX)) return 0;        // in case no one is listening we are just going to drop packets, USB_Send might freeze in case no one listens.
 
-        int  r = USB_Send(MIDI_TX, buffer, size);       // return amount sent.
+        int  r = USB_Send(MIDI_TX, &data, sizeof(data));       // return amount sent.
 
-        if(r > 0) return r;
-        else return 0;
+        return r;
     }
 
 };

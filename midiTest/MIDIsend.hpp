@@ -2,6 +2,7 @@
 
 #include "MIDIcommandByte.hpp"
 #include "MIDIenums.hpp"
+#include "MIDIbasic.hpp"
 #ifndef ARDUINO
 #include <cstdint>
 #endif
@@ -30,39 +31,30 @@ namespace MIDI {
 
     template<typename T>
     inline bool sendNoteON(T& midi, unsigned char channel, MCU::NoteMapping note, unsigned char velocity){
-        midi.write(CommandByte::make(Command::NoteON, channel).mCommandByte);
-        midi.write(capData(note));      //ensures that it is max 127
-        midi.write(capData(velocity));  //ensures that it is max 127
+        Basic b{CommandByte::make(Command::NoteON, channel), capData(note), capData(velocity), 0};
+        b.print(Serial);
+        midi.write(b);
+        
     }
 
     template<typename T>
     inline bool sendNoteOFF(T& midi, unsigned char channel, MCU::NoteMapping note, unsigned char velocity){
-        midi.write(CommandByte::make(Command::NoteOFF, channel).mCommandByte);
-        midi.write(capData(note));      //ensures that it is max 127
-        midi.write(capData(velocity));  //ensures that it is max 127
+        midi.write(Basic{CommandByte::make(Command::NoteOFF, channel), capData(note), capData(velocity), 0});
     }
 
     template<typename T>
     inline bool sendControl(T& midi, unsigned char channel, MCU::ControlMapping control, unsigned char value){
-        midi.write(CommandByte::make(Command::ControlModeChange, channel).mCommandByte);
-        midi.write(capData(control));   //ensures that it is max 127
-        midi.write(capData(value));     //ensures that it is max 127
+        midi.write(Basic{CommandByte::make(Command::ControlModeChange, channel), capData(control), capData(value), 0});
     }
 
     template<typename T>
     inline bool sendPitch(T& midi, MCU::PitchBendMapping pitch_channel, unsigned char lsb, unsigned char msb){
-        midi.write(CommandByte::make(Command::PitchBendChange, pitch_channel).mCommandByte);
-        midi.write(capData(lsb));   //ensures that it is max 127
-        midi.write(capData(msb));     //ensures that it is max 127
+        midi.write(Basic{CommandByte::make(Command::PitchBendChange, pitch_channel), capData(lsb), capData(msb), 0});
     }
-
-
 
     template<typename T>
     inline bool sendPitch(T& midi, MCU::PitchBendMapping pitch_channel, fp_2_14 lsb_msb_14bit){
-        midi.write(CommandByte::make(Command::PitchBendChange, pitch_channel).mCommandByte);
-        midi.write(lsb_msb_14bit & 0b01111111);     //ensures that it is max 127
-        midi.write(capData(lsb_msb_14bit >> 7));             //ensures that it is max 127
+        midi.write(Basic{CommandByte::make(Command::PitchBendChange, pitch_channel), lsb_msb_14bit & 0b01111111, capData(lsb_msb_14bit >> 7), 0});
     }
 
     // represents 4 decimal places

@@ -1,3 +1,4 @@
+#include <stdint.h>
 #include "MIDIenums.hpp"
 #pragma once
 #include "MIDIcommandByte.hpp"
@@ -10,6 +11,12 @@ namespace MIDI {
 
         Basic(Command _command, unsigned char _channel){
             makeCommandByte(_command, _channel);
+        }
+
+        Basic(CommandByte _command, uint8_t byte1, uint8_t byte2, uint8_t byte3) : CommandByte(_command) {
+            mData[0] = byte1;
+            mData[1] = byte2;
+            mData[2] = byte3;
         }
 
         unsigned char mData[3];

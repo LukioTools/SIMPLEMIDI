@@ -19,6 +19,7 @@ namespace MIDI {
 
             bool run(const bool& _currentState){
                 if(_currentState == true && lastState == false){
+                    Serial.println("writing...");
                     sendNoteON(midi, channel, note, velocity);
                     midi.flush();
                     lastState = true;
