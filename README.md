@@ -45,17 +45,49 @@ Pluggable USB based implementations use BSD License
 
 ## MIDI_USB
 
+instance creation.
+```c++ 
+MIDI_USB midi;
+```
+
+
 ### Functions available:
 |function|params|explanation|
 |--|--|--|
-|`MIDI_USB::begin`||starts the USB communication|
-|`MIDI_USB::poll`||receive data from USB and writes to buffer|
+|[`MIDI_USB::begin`](#begin)||starts the USB communication|
+|[`MIDI_USB::poll`](#poll)||does receive data from USB and writes to buffer|
 |[`MIDI_USB::read`](#read)||reads `typename T` from buffer|
 |[`MIDI_USB::peek`](#peek)||reads `typename T` from buffer, doesnt increment pointer|
-|`MIDI_USB::finalize`||is done automatically|
+|[`MIDI_USB::finalize`](#finalize)||is done automatically|
 |[`MIDI_USB::write`](#write)|`typename T data`|writes data to USB|
 |`MIDI_USB::flush`||flushes data|
 
+### Begin
+Calling `MIDI_USB::begin` starts MIDI communication between arduino and a computer. After this you can read [`MIDI_USB::write`](#write) and send [`MIDI_USB::read`](#read)  messages 
+
+#### example
+```c++
+void setup(){
+    ...
+    // midi is a created MIDI_USB instance
+    midi.begin();
+    ...
+}
+```
+
+
+### Poll
+Poll is used to receive bytes from USB. The data is stored into a buffer. You can read the buffer using [`MIDI_USB::peek`](#peek) or [`MIDI_USB::read`](#read) methods. You have to poll before reading as this is not done automatically.
+
+#### example
+```c++
+void loop(){
+    ...
+    // midi is a created MIDI_USB instance
+    midi.poll();
+    ...
+}
+```
 
 ### Read
 Read is a nonblocking call, that polls new data to buffer, if nececcary. If enough data is in the buffer, returns a casted pointer to the begining of the buffer, otherwise returns nullptr.
@@ -96,12 +128,47 @@ Write is most commonly used with types like [`MIDI::Event`](#event). Normally wr
 Event ev(...); 
 midi.write(ev); // midi is a created MIDI_USB instance
     //or using pointer interface
+midi.flush();
+
+// or
+
 char* data = ...;
 size_t dataSize = ...;
 midi.write(data, dataSize); // midi is a created MIDI_USB instance
     //MIDI::send* family of functions are also a great way of sending midi data
 MIDI::sendNoteON(midi, ...);
+midi.flush();
 ```
+
+### Finalize
+cleans up the input buffer. Is used automatically before poll
+
+#### example
+
+```c++
+// midi is a created MIDI_USB instance
+midi.poll();
+Event* e = midi.read<Event>();
+midi.finalize();
+``` 
+
+### Flush
+Sends written messages to computer. Same as any other flush command. Use after [`MIDI_USB::write`](#write) and after `MIDI::send*` functions.
+
+#### example
+```c++
+// midi is a created MIDI_USB instance
+Event ev(...);
+midi.write(ev);
+midi.flush();
+
+// or
+
+MIDI::sendNoteON(midi ...);
+midi.flush()
+```
+
+
 ## Event
 
 Event is a type that contains midi event data. Usually used for input, but can be used as output using the [`MIDI_USB::Write`](#write) method
@@ -140,6 +207,7 @@ This will include add strings used in debugging and a method `Event::print(T pri
     Event* event = midi.read<Event>();
     event->print(Serial);
 ```
-```
+
+```c++
 ==> NoteOFF[0]{ Note: REC1, Velocity: 0 }
 ```
