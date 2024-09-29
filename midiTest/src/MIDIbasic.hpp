@@ -2,9 +2,10 @@
 
 #include <stdint.h>
 #include "MIDICableByte.hpp"
-#include "MIDIenums.hpp"
 #include "MIDIcommandByte.hpp"
 #include "MIDIfp2_16.hpp"
+
+#include "MIDIenums.hpp"
 
 
 namespace MIDI {
@@ -31,6 +32,8 @@ namespace MIDI {
         unsigned char* end(){
             return reinterpret_cast<unsigned char*>(this) + sizeof(*this);
         }
+
+#ifdef MIDI_PRINT
             //does not print cable byte
         template<typename T>
         void print(T& printable){
@@ -115,6 +118,7 @@ namespace MIDI {
                 }
             }
         }
+#endif
 
         template<typename T>
         void printRaw(T& printable){
