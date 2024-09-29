@@ -12,6 +12,25 @@ MIDI library for Arduino
 
 4. Use the ``begin`` methond in ``setup()``
 
+4. Use the ``MIDI_USB::begin()`` methond in ``setup()``
+
+5. Read using the ` T* MIDI_USB::read<T>() ` method, returns nullptr, if not enough data was available for the size of your structure. Read polls automaticly if needed, but doesnt block.
+
+6. Write using the `size_t MIDI_USB::write<T>(const T&)` method or using the `MIDI::send*` group of functions
+
+7. Profit
+
+## Benefits
+This library has been inspired (copied) from MIDIUSB (made by arduino) and USBMIDI made by BlokasLabs. 
+<br>
+<br>
+USBMIDI has major flaw: other usb libraries do not work at the same time on Windows. For example ``<Keyboard.h>`` does not work. in other hand, MIDIUSB is over simplified and isn't able to give one byte at the time. But does support ``<Keyboard.h>`` on Windows. (both work on Linux)
+
+SIMPLEMIDI is designed to work with other libraries unlike the USMIDI on both Windows and Linux. We don't know the situation on MAC. This libary has input buffer, so you can read or write in any size. ``T t = read<T>()`` and ``write(T)`` where T is your datatype. further information [here](#midi_usb).
+
+
+## Supported Devices
+The Libary is implemented only for AVR board having native USB functionality (ATMEGA32u4, arduino leonardo, micro pro, and similar devices). Software USB isn't supported.
 
 ## Functions available:
 |function|params|explanation|
@@ -24,30 +43,8 @@ MIDI library for Arduino
 |``MIDI_USB::flush``||flushes data|
 
 
-## Benefits
-This library has been inspired (copied) from MIDIUSB (made by arduino) and USBMIDI made by BlokasLabs. 
-<br>
-<br>
-USBMIDI has major flaw: other usb libraries do not work at the same time on Windows. For example ``<Keyboard.h>`` does not work.
-<br>
-<br>
-in other hand, MIDIUSB is over simplified and isn't able to give one byte at the time. But does support ``<Keyboard.h>`` on Windows. (both work on Linux)
-
-SIMPLEMIDI is designed to support other USB libraries on both, Windows and Linux. We don't know the situation on MAC. This libary has input buffer, so you can read or write in any size. ``T t = read<T>()`` and ``write(T)`` where T is your datatype.  
-
-
-## Supported Devices
-The Libary is implemented only for AVR board having native USB functionality (ATMEGA32u4, arduino leonardo, micro pro, and similar devices). Software USB isn't supported.
-
 ## License
 Pluggable USB based implementations use BSD License
-4. Use the ``MIDI_USB::begin()`` methond in ``setup()``
-
-5. Read using the ` T* MIDI_USB::read<T>() ` method, returns nullptr, if not enough data was available for the size of your structure. Read polls automaticly if needed, but doesnt block.
-
-6. Write using the `size_t MIDI_USB::write<T>(const T&)` method or using the `MIDI::send*` group of functions
-
-7. Profit
 
 ## MIDI_USB
 
