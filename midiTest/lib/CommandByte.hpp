@@ -1,6 +1,5 @@
 #pragma once
-
-struct Command{};
+#include "Enums.hpp"
 
 struct CommandByte{
 
@@ -14,7 +13,10 @@ struct CommandByte{
 
     unsigned char getDataByteCount() const;
 
-    static Command getCommand(unsigned char mCommandByte);
-
-    static unsigned char getChannel(unsigned char mCommandByte);
+    static Command getCommand(unsigned char mCommandByte){
+        return static_cast<Command>((mCommandByte>>4) & 0b111);
+    }
+    static unsigned char getChannel(unsigned char mCommandByte){
+        return mCommandByte & 0xF;
+    }
 };
