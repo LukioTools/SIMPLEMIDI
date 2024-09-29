@@ -38,11 +38,6 @@ The library  is implemented only for AVR board having native USB functionality (
 ## Bugs & features
 Feel free to open a new issue or do pull request. Fastest way to fix problem(s)/add feature(s) is pull request, as we are not committed on this project too much. Small changes or help can be done through issues.  
 
-
-
-## License
-Pluggable USB based implementations use BSD License
-
 ## MIDI_USB
 
 instance creation.
@@ -281,3 +276,7 @@ midi events via USB are sent in 4 bytes.
 |Cable number \| Code Index Number |MIDI_0|MIDI_1|MIDI_2| 
 
 please refer to https://www.usb.org/sites/default/files/midi10.pdf ("4 USB-MIDI Event Packets")
+
+
+## License
+GPL 2.0
