@@ -75,8 +75,8 @@ midi.write(ev); // midi is a created MIDI_USB instance
 char* data = ...;
 size_t dataSize = ...;
 midi.write(data, dataSize); // midi is a created MIDI_USB instance
-    //or using MIDI::send*
-MIDI::sendNoteON(midi, ...); // MIDI::send* family of functions are also a great way of sending midi data
+    //MIDI::send* family of functions are also a great way of sending midi data
+MIDI::sendNoteON(midi, ...);
 ```
 ## Event
 
