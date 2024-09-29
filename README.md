@@ -176,7 +176,7 @@ Event& ev = *event;
 ```
 
 ## Send*
-Send* is a group of functions used to send a midi events.
+Send* is a group of functions used to send midi events.
 -   send<`CodeIndex`, `Command`>([MIDI_USB](#midi_usb), dataByte1, dataByte2, channel = 0, cable = 0)
 -   sendNoteON ([MIDI_USB](#midi_usb), channel, note, velocity)
 -   sendNoteOFF ([MIDI_USB](#midi_usb), channel, note, velocity)
@@ -257,7 +257,7 @@ This will include add strings used in debugging and a method `Event::print(T pri
 ==> NoteOFF[0]{ Note: REC1, Velocity: 0 }
 ```
 
-## In case of emergency
+## In Case of Emergency
 You may find these links helpful <br>
 https://midi.org/summary-of-midi-1-0-messages 
 <br>
