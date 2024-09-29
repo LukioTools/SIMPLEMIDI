@@ -879,6 +879,27 @@ namespace MIDI {
         ActiveSensing, 
         SystemReset, 
     };
+        //TODO: print functionality
+    enum CodeIndex : unsigned char{
+        MISC,
+        CABLE_EVENT,
+        SYSMSG_2,
+        SYSMSG_3,
+        SYSEX,
+        SYSMSG_SYSEND_1,
+        SYSEND_2,
+        SYSEND_3,
+        NOTE_OFF,
+        NOTE_ON,
+        POLY_KEY,
+        CTRL_CHANGE,
+        PROG_CHANGE,
+        CHAN_PRESS,
+        PITCH_CHANGE,
+        BYTE_1,
+
+    };
+
 
 #ifdef MIDI_PRINT
     const char* toString(Command n){
