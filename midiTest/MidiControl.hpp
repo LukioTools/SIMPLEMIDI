@@ -1,76 +1,80 @@
 #pragma once
 
 #include "MIDIenums.hpp"
+#include "MIDIfp2_16.hpp"
 #include "MIDIsend.hpp"
 #include "MIDIbasic.hpp"
 
 namespace MIDI {
 
     namespace DeviceControl {
-        template<typename t>
+        template<typename MIDI_API, MCU::NoteMapping Note, unsigned char Channel = 0, unsigned char Velocity = 127>
         struct NoteBtn{
-            bool lastState = false;
-            unsigned char channel;
-            MCU::NoteMapping note;
-            char velocity;
-            t& midi;
+            MIDI_API& mMidi;
+            bool mLastState = false;
+
             NoteBtn(){}
-            NoteBtn(t& _midi, unsigned char _channel, MCU::NoteMapping _note, unsigned char _velocity) : midi(_midi),channel(_channel),  note(_note), velocity(_velocity){}
+            NoteBtn(MIDI_API& _midi) : mMidi(_midi){}
 
-            bool run(const bool& _currentState){
-                if(_currentState == true && lastState == false){
-                    sendNoteON(midi, channel, note, velocity);
-                    midi.flush();
-                    lastState = true;
-                }else if(_currentState == false && lastState == true){
-                    lastState = false;
+            void run(const bool& _currentState){
+                if(_currentState == true && mLastState == false){
+                    sendNoteON(mMidi, Channel, Note, Velocity);
+                    mMidi.flush();
+                    mLastState = true;
+                }else if(_currentState == false && mLastState == true){
+                    mLastState = false;
                 }
-
-                return false;
             }
         };
 
-        template<typename t>
-        struct NoteRotaryEncoder{
-            bool lastState = false;
-            int counter;
-            int lastCounter;
-            MCU::PitchBendMapping channel;
+        template<typename MIDI_API, MCU::PitchBendMapping Channel>
+        struct PitchRotaryEncoder{
+            MIDI_API& mMidi;
 
-            int resolution;
+            bool mLastState = false;
+            fp_2_14 mCounter;
+            int mLastCounter;
 
-            t& midi;
-            NoteRotaryEncoder(){}
-            NoteRotaryEncoder(t& _midi, MCU::PitchBendMapping _channel, int _resolution) : midi(_midi),channel(_channel), resolution(_resolution){}
+            int mResolution;
 
-            void setCounter(){}
+            PitchRotaryEncoder(){}
+            PitchRotaryEncoder(MIDI_API& _midi, int _resolution) : mMidi(_midi), mResolution(_resolution){}
+
+            void setCounter(fp_2_14 count){
+                if (count < 0) {
+                    mCounter = 0;
+                }else if (count > FP_2_14_MAX) {
+                    mCounter = FP_2_14_MAX;
+                }else{
+                    mCounter = count;
+                }
+            }
 
 
-            bool run(const bool& aState, const bool& bState){
+            bool run(const bool& clockState, const bool& dataState){
 
-                if(aState != lastState && aState == 1){
+                if(clockState != mLastState && clockState == 1){
                 
-                    if(bState != aState){
-                        counter -= resolution;
-                    }else {
-                        counter += resolution;
+                    if(dataState != clockState){
+                        if (mCounter < mResolution) {
+                            mCounter = 0;
+                        }else mCounter -= mResolution;
+                    }else{
+                        if (mCounter + mResolution > FP_2_14_MAX) {
+                            mCounter = FP_2_14_MAX;
+                        } else mCounter += mResolution;
                     }
 
-                    if(counter < 0) counter = 0;
-                    if(counter > 16384) counter = 16384;
-
-                    sendPitch(midi, channel, counter);
-                    midi.flush();
+                    sendPitch(mMidi, Channel, mCounter);
+                    mMidi.flush();
                 }
 
-                lastState = aState;
-                
-
+                mLastState = clockState;
             }
 
             void updateValue(Event& basic){
-                if(basic.getCommand() == Command::PitchBendChange && basic.getChannel() == channel)
-                    counter = basic.dataToFixed();
+                if(basic.getCommand() == Command::PitchBendChange && basic.getChannel() == Channel)
+                    mCounter = basic.dataToFixed();
             }
         };
     }

@@ -36,9 +36,6 @@ namespace MIDI {
     }
 
     inline fp_2_14 getFixed(unsigned char* lsb_msb){
-        unsigned short s = lsb_msb[1];
-        s<<=7;
-        s|=lsb_msb[0];
-        return s;
+        return getFixed(lsb_msb[0], lsb_msb[1]);
     }
 }
