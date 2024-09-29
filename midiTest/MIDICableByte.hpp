@@ -2,7 +2,7 @@
 
 namespace MIDI {
 
-    enum CodeIndex{
+    enum CodeIndex : unsigned char{
         MISC,
         CABLE_EVENT,
         SYSMSG_2,
@@ -20,16 +20,20 @@ namespace MIDI {
         PITCH_CHANGE,
         BYTE_1,
 
-    }
+    };
 
     struct CableByte{
         unsigned char mCableByte;
 
-        unsigned char getCable() const{
-            return mCableByte & 0b11110000;
+        CableByte(unsigned char _cableByte = 0) : mCableByte(_cableByte) {}
+
+        CableByte(CodeIndex _codeIndex, unsigned char _cableNumber = 0) : mCableByte((_codeIndex & 0b00001111) | (_cableNumber << 4)) {}
+
+        unsigned char getCableNumber() const{
+            return getCable() >> 4;
         }
 
-        unsigned char getCodeIndex() const{
+        CodeIndex getCodeIndex() const{
             return mCableByte & 0b00001111;
         }
 
@@ -37,8 +41,13 @@ namespace MIDI {
             mCableByte = getCodeIndex() | (_cable << 4);
         } 
 
-        void setCodeIndex(unsigned char _codeIndex){
-            mCableByte = getCable() | (_codeIndex & 0b00001111);
+        void setCodeIndex(CodeIndex _codeIndex){
+            mCableByte = getCable() | ( _codeIndex & 0b00001111);
         }
-    } 
+
+    private:
+        unsigned char getCable() const{
+            return (mCableByte & 0b11110000);
+        }
+    }; 
 }
