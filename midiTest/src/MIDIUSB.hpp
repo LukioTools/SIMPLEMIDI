@@ -1,3 +1,9 @@
+#ifndef ARDUINO
+#define USBCON
+#define ARDUINO_ARCH_AVR
+#include <cstdint>
+#endif
+
 #include <string.h>
 #pragma once
 
@@ -9,6 +15,8 @@
 #error MIDIUSB can only be used with AVR boards.
 #endif
 
+
+#if ARDUINO
 #include "USBCore.h"
 #include <avr/interrupt.h>
 
@@ -17,10 +25,8 @@
 #include "PluggableUSB.h"
 #include <Arduino.h>
 #include <stdint.h>
-
-#ifndef ARDUINO
-#include <cstdint>
 #endif
+
 
 #define MIDI_AC_INTERFACE 	pluggedInterface	// MIDI AC Interface
 #define MIDI_INTERFACE 		((uint8_t)(pluggedInterface+1))
