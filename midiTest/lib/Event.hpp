@@ -1,25 +1,19 @@
 // represents 4 decimal places
-    struct Event : public CableByte, public CommandByte{
+#include "CableByte.hpp"
+#include "CommandByte.hpp"
+#include "FP_2_14.hpp"
 
-        Event(const CableByte cableByte = {}, const CommandByte commandByte = {}, const uint8_t byte1 = 0, const uint8_t byte2 = 0): 
-            CableByte{cableByte}, 
-            CommandByte{commandByte}, 
-            mData{byte1, byte2} {
-                static_assert(sizeof(*this) == 4, "Out of spec");
-            }
+struct Event : public CableByte, public CommandByte{
 
-        unsigned char mData[2];
+    Event(const CableByte cableByte = {}, const CommandByte commandByte = {}, const uint8_t byte1 = 0, const uint8_t byte2 = 0);
 
-        fp_2_14 dataToFixed(){
-            return getFixed(mData);
-        }
+    unsigned char mData[2];
 
-        unsigned char* begin(){
-            return reinterpret_cast<unsigned char*>(this);
-        }
-        unsigned char* end(){
-            return reinterpret_cast<unsigned char*>(this) + sizeof(*this);
-        }
+    fp_2_14 dataToFixed();
+
+    unsigned char* begin();
+    
+    unsigned char* end();
 
 #ifdef MIDI_PRINT
             //does not print cable byte
@@ -109,20 +103,8 @@
 #endif
 
         template<typename T>
-        void printRaw(T& printable){
-            printable.print("{ ");
-            printable.print(mCableByte);
-            printable.print(", ");
-            printable.print(mCommandByte);
-            printable.print(", ");
-            printable.print(mData[0]);
-            printable.print(", ");
-            printable.print(mData[1]);
-            printable.println(" }");
-        }
+        void printRaw(T& printable);
 
-        bool valid(){
-            return mCommandByte & 0b10000000;
-        }
+        bool valid();
 
     };
