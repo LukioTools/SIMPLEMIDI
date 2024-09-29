@@ -34,7 +34,7 @@ namespace MIDI {
         }
 
         CodeIndex getCodeIndex() const{
-            return mCableByte & 0b00001111;
+            return static_cast<CodeIndex>(mCableByte & 0b00001111);
         }
 
         void setCable(unsigned char _cable){
