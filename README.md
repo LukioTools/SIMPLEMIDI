@@ -191,8 +191,17 @@ Send* is a group of functions used to send a midi events.
 
 #### example
 ```c++
-send<MIDI::CodeIndex::NOTE_ON>
-sendNoteON(midi, 0, )
+MIDI::send<MIDI::CodeIndex::NOTE_ON, MIDI::Command::NoteON>(midi, 0, 0);
+
+MIDI::sendNoteON(midi, 0, MCU::NoteMapping::PLAY, 127); // 0 = false and 127 = true
+
+MIDI::sendNoteOFF(midi, 0, MCU::NoteMapping::PLAY, 0);  // (isn't required)
+
+MIDI::sendControl(midi, 0, MCU::ControlMapping::VPOT_ROTATION0, 43);
+
+MIDI::sendPitch(midi, 0, 45, 123); // lsb and msb are between 0-127
+
+MIDI::sendPitch(midi, 0, 10000); // between 0-16384
 ```
 
 ## Enums
