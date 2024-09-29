@@ -263,7 +263,14 @@ public:
     template<typename T>
     size_t write(const T& data){
         if(!is_write_enabled(MIDI_TX)) return 0;        // in case no one is listening we are just going to drop packets, USB_Send might freeze in case no one listens.
-        int  r = USB_Send(MIDI_TX, &data, sizeof(data));       // return amount sent.
+        size_t  r = USB_Send(MIDI_TX, &data, sizeof(data));       // return amount sent.
+
+        return r;
+    }
+
+    size_t write(const void* data, size_t nBytes){
+        if(!is_write_enabled(MIDI_TX)) return 0;        // in case no one is listening we are just going to drop packets, USB_Send might freeze in case no one listens.
+        size_t  r = USB_Send(MIDI_TX, data, nBytes);       // return amount sent.
 
         return r;
     }
