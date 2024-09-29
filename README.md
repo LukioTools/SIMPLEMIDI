@@ -180,6 +180,21 @@ Event* event = midi.read<Event>();
 Event& ev = *event;
 ```
 
+## Send*
+Send* is a group of functions used to send a midi events.
+-   send<`CodeIndex`, `Command`>([MIDI_USB](#midi_usb), dataByte1, dataByte2, channel = 0, cable = 0)
+-   sendNoteON ([MIDI_USB](#midi_usb), channel, note, velocity)
+-   sendNoteOFF ([MIDI_USB](#midi_usb), channel, note, velocity)
+-   sendControl ([MIDI_USB](#midi_usb), channel, control, value)
+-   sendPitch ([MIDI_USB](#midi_usb), channel, lsb (least significant byte), msb (most significant byte))
+-   sendPitch ([MIDI_USB](#midi_usb), channel, 14bitValue) value between (0-16384)
+
+#### example
+```c++
+send<MIDI::CodeIndex::NOTE_ON>
+sendNoteON(midi, 0, )
+```
+
 ## Enums
 Referenced from https://github.com/NicoG60/TouchMCU/blob/main/doc/mackie_control_protocol.md
 |namespace|Enum|Explanation|
