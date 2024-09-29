@@ -13,7 +13,6 @@ MIDI_USB MidiUSB;
 MIDI::DeviceControl::NoteBtn<MIDI_USB> playBtn(MidiUSB, 0, MIDI::MCU::NoteMapping::STOP, 127);
 
 
-
 void setup() {
     Serial.begin(115200);
     MidiUSB.begin();
@@ -34,5 +33,7 @@ void loop() {
         Keyboard.write(c+1);
     }
 
+    //MidiUSB.write();
+    //MidiUSB.flush();
     playBtn.run(digitalRead(PLAYBTN));
 }

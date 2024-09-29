@@ -7,7 +7,7 @@
 #include <cstdint>
 #endif
 
-using fp_2_14 = unsigned short;
+
 namespace MIDI {
     inline unsigned short getShort(unsigned char lsb, unsigned char msb){
         unsigned short s = msb;
@@ -28,11 +28,19 @@ namespace MIDI {
         return v & 0b01111111;
     }
 
+    typedef struct
+    {
+        uint8_t header;
+        uint8_t byte1;
+        uint8_t byte2;
+        uint8_t byte3;
+    } eee;
+
 
     template<typename T>
     inline bool sendNoteON(T& midi, unsigned char channel, MCU::NoteMapping note, unsigned char velocity){
-        Basic b{CommandByte::make(Command::NoteON, channel), capData(note), capData(velocity), 0};
-        b.print(Serial);
+        //eee b{CommandByte::make(Command::NoteON, channel).mCommandByte,(CommandByte::make(Command::NoteON, channel).mCommandByte << 4) | channel, capData(note), capData(velocity)};
+        eee b{(Command::PitchBendChange<<4) | 128 | 2, 127, 127, 0x08};
         midi.write(b);
         
     }
@@ -57,20 +65,5 @@ namespace MIDI {
         midi.write(Basic{CommandByte::make(Command::PitchBendChange, pitch_channel), lsb_msb_14bit & 0b01111111, capData(lsb_msb_14bit >> 7), 0});
     }
 
-    // represents 4 decimal places
 
-    constexpr fp_2_14 max = 16384;
-    constexpr size_t decimalPlaces = 4;
-    char loadedNumber[7] = {'0','.','0','0','0','0', 0};
-    const char* toString(fp_2_14 fp){
-        loadedNumber[0] = '0'+(fp>>14);
-            //trust me bro
-        uint32_t fract = (uint32_t(fp&0b0011111111111111) * 10000)/max;
-        for(size_t i = 0; i < decimalPlaces; i++){
-            loadedNumber[sizeof(loadedNumber)-2 - i] = '0' + fract%10;
-            fract/=10;
-        }
-        loadedNumber[sizeof(loadedNumber)-1] = 0;
-        return loadedNumber;
-    }
 }
