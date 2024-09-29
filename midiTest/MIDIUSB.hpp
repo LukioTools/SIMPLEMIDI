@@ -1,14 +1,12 @@
 #include <string.h>
 #pragma once
 
-// -------------------------
-// error checking 
-#if ARDUINO < 10606
-#error MIDIUSB requires Arduino IDE 1.6.6 or greater. Please update your IDE.
-#endif
-
 #if !defined(USBCON)
 #error MIDIUSB can only be used with an USB MCU.
+#endif
+
+#if !defined(ARDUINO_ARCH_AVR)
+#error MIDIUSB can only be used with AVR boards.
 #endif
 
 #include "USBCore.h"
