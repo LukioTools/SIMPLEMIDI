@@ -44,13 +44,13 @@ Pluggable USB based implementations use BSD License
 ### Functions available:
 |function|params|explanation|
 |--|--|--|
-|``MIDI_USB::begin``||starts the USB communication|
-|``MIDI_USB::poll``||receive data from USB and writes to buffer|
-|[``MIDI_USB::read``](#read)||reads ``template T`` from buffer|
-|``MIDI_USB::peek``||reads ``template T`` from buffer, doesnt increment pointer|
-|``MIDI_USB::finalize``||is done automatically|
-|[``MIDI_USB::write``](#write)|``Typename T data``|writes data to USB|
-|``MIDI_USB::flush``||flushes data|
+|`MIDI_USB::begin`||starts the USB communication|
+|`MIDI_USB::poll`||receive data from USB and writes to buffer|
+|[`MIDI_USB::read`](#read)||reads `typename T` from buffer|
+|[`MIDI_USB::peek`](#peek)||reads `typename T` from buffer, doesnt increment pointer|
+|`MIDI_USB::finalize`||is done automatically|
+|[`MIDI_USB::write`](#write)|`typename T data`|writes data to USB|
+|`MIDI_USB::flush`||flushes data|
 
 
 ### Read
@@ -66,6 +66,21 @@ while(Event* event = midi.read<Event>()){
 }
 ```
 
+### Peek
+Peek is the same as [`MIDI_USB::read()`](#read), but it doesn't move the read offset pointer.
+This function is perfect when you need to be an indesicive ~~cunt~~.
+
+#### Example
+```c++
+midi.poll(); // midi is a created MIDI_USB instance
+if(byte* data = midi.peek<byte>() && data == 20){
+    auto e = midi.read<Event>();
+    ...
+}else{
+    auto e = midi.read<unsigned int>();
+    ...
+}
+```
 
 ### Write
 Write is an unbuffered call to write specified data to the usb buffer. 
