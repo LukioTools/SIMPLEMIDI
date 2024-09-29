@@ -22,7 +22,6 @@
 
 #ifndef ARDUINO
 #define PROGMEM 
-using size_t = unsigned short;
 void strcpy_P(const char*, const char*);
 #endif
 
@@ -617,7 +616,7 @@ namespace MIDI {
 
             FADER_POSITION_MASTER = 8,
         };
-        
+
         enum ControlMapping : unsigned char{
             VPOT_ROTATION0 = 16,
             VPOT_ROTATION1,

@@ -27,9 +27,9 @@ as the title says... simple MIDI library for Arduino. The library also has suppo
 ## Benefits
 This library has been inspired (copied) from MIDIUSB (made by Arduino) and USBMIDI made by BlokasLabs. 
 <br>
-USBMIDI has major flaw: other USB libraries do not work at the same time on Windows. For example, ``<Keyboard.h>`` does not work. in other hand, MIDIUSB is over simplified and isn't able to give one byte at the time. But does support ``<Keyboard.h>`` on Windows. (both work on Linux)
+USBMIDI has major flaw: other USB libraries do not work at the same time on Windows. For example, ``<Keyboard.h>`` does not work. In other hand, MIDIUSB is over simplified and isn't able to give one byte at the time. But does support ``<Keyboard.h>`` on Windows. (both work on Linux)
 
-SIMPLEMIDI is designed to work with other libraries unlike the USMIDI on both Windows and Linux. We don't know the situation on MAC. This library  has input buffer, so you can read or write in any size. `T t = read<T>()` and `write(T)` where T is your datatype. further information [here](#midi_usb).
+SIMPLEMIDI is designed to work with other libraries unlike the USMIDI, on both Windows and Linux. We don't know the situation on MAC. This library  has input buffer, so you can read or write in any size. `T t = read<T>()` and `write(T)` where T is your datatype. further information [here](#midi_usb).
 
 
 ## Supported Devices
@@ -199,9 +199,34 @@ MIDI::sendNoteOFF(midi, 0, MCU::NoteMapping::PLAY, 0);  // (isn't required)
 
 MIDI::sendControl(midi, 0, MCU::ControlMapping::VPOT_ROTATION0, 43);
 
-MIDI::sendPitch(midi, 0, 45, 123); // lsb and msb are between 0-127
+MIDI::sendPitch(midi, MIDI::MCU::PitchBendMapping::FADER_POSITION_MASTER, 45, 123); // lsb and msb are between 0-127
 
-MIDI::sendPitch(midi, 0, 10000); // between 0-16384
+MIDI::sendPitch(midi, MIDI::MCU::PitchBendMapping::FADER_POSITION_MASTER, 10000); // between 0-16384
+```
+
+## DeviceControl
+The library has few "Controllers" for devies like button and rotart encoder. It also includes software versions.
+<br>
+You have to create instance for every device.
+
+#### example
+```c++
+MIDI::DeviceControl::NoteBtn<MIDI_USB, MIDI::MCU::NoteMapping::PLAY> playBtn(midi);
+MIDI::DeviceControl::PitchRotaryEncoder<MIDI_USB, MIDI::MCU::FADER_POSITION_MASTER> rotaryEncoder(midi, 100);
+
+```
+in code you have to update the state of the device.
+```c++
+playBtn.run(digitalRead(BUTTON_PIN));
+rotaryEncoder.run(digitalRead(CLK), digitalRead(DT)) // this has to be updated frequently
+```
+
+you can update the rotary encoder status based on the midi status.
+```c++
+while(Event* event = midi.read<Event>()){
+    // updateValue will automatically find the correct midi packet and update based on it.
+    rotaryEncoder.updateValue(event); 
+}
 ```
 
 ## Enums
@@ -213,7 +238,8 @@ Referenced from https://github.com/NicoG60/TouchMCU/blob/main/doc/mackie_control
 |MIDI::MCU|ControlMapping| Control mapping (used for MCU commands) (potentiometer and led ring)|
 |MIDI::MCU|ChannelpressureMapping| no clue|
 |MIDI|Command| command (Note off, etc)|
-|MIDI|SystemMessage|tells what kinda of system message it is|
+|MIDI|SystemMessage|tells what kinda of message it is|
+|MIDI|CodeIndex|Some shenanigans (https://www.usb.org/sites/default/files/midi10.pdf )|
 
 
 ## Debugging
@@ -235,3 +261,23 @@ This will include add strings used in debugging and a method `Event::print(T pri
 ```c++
 ==> NoteOFF[0]{ Note: REC1, Velocity: 0 }
 ```
+
+## In case of emergency
+You may find these links helpful <br>
+https://midi.org/summary-of-midi-1-0-messages 
+<br>
+https://midi.org/expanded-midi-1-0-messages-list
+<br>
+https://github.com/NicoG60/TouchMCU/blob/main/doc/mackie_control_protocol.md
+<br>
+https://www.usb.org/sites/default/files/midi10.pdf
+
+## Something else
+### About the protocol:
+midi events via USB are sent in 4 bytes.
+<br>
+|Byte 0|Byte 1|Byte 2|Byte 3|
+|--|--|--|--|
+|Cable number \| Code Index Number |MIDI_0|MIDI_1|MIDI_2| 
+
+please refer to https://www.usb.org/sites/default/files/midi10.pdf ("4 USB-MIDI Event Packets")
