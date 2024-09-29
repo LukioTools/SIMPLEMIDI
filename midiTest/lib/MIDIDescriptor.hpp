@@ -1,11 +1,5 @@
 #pragma once
 #include <stdint.h>
-#include "ACInterfaceDescriptor.hpp"
-#include "ASInterfaceDescriptor.hpp"
-#include "JackInDescriptor.hpp"
-#include "JackOutDescriptor.hpp"
-#include "EPDescriptor.hpp"
-#include "EP_ACDescriptor.hpp"
 
 #ifndef ARDUINO
 #define USBCON
@@ -31,8 +25,6 @@
 #include <stdint.h>
 #endif
 
-;
-#pragma pack(push, 1)
 
 
 #define MIDI_AC_INTERFACE 	pluggedInterface	// MIDI AC Interface
@@ -87,7 +79,58 @@
 
 
 
+;
+#pragma pack(push, 1)
 
+struct MIDI_ACInterfaceDescriptor {
+	uint8_t len;		// 9
+	uint8_t dtype;		// 4
+	uint8_t dsubType;
+	uint16_t bcdADc;
+	uint16_t wTotalLength;
+	uint8_t bInCollection;
+	uint8_t interfaceNumbers;
+};
+struct MIDI_ASInterfaceDescriptor {
+	uint8_t len;		// 9
+	uint8_t dtype;		// 4
+	uint8_t dsubType;
+	uint16_t bcdADc;
+	uint16_t wTotalLength;
+};
+
+struct MIDI_EP_ACDescriptor {
+	uint8_t len;		// 5
+	uint8_t dtype;		// 0x24
+	uint8_t subtype;
+	uint8_t embJacks;
+	uint8_t jackID;
+};
+
+struct MIDI_EPDescriptor {
+	EndpointDescriptor len;		// 9
+	uint8_t refresh;		// 4
+	uint8_t sync;
+};
+struct MIDIJackinDescriptor {
+	uint8_t len;		// 9
+	uint8_t dtype;		// 4
+	uint8_t dsubType;
+	uint8_t jackType;
+	uint8_t jackID;
+	uint8_t jackStrIndex;
+};
+struct MIDIJackOutDescriptor {
+	uint8_t len;		// 9
+	uint8_t dtype;		// 4
+	uint8_t dsubType;
+	uint8_t jackType;
+	uint8_t jackID;
+	uint8_t nPins;
+	uint8_t srcJackID;
+	uint8_t srcPinID;
+	uint8_t jackStrIndex;
+};
 struct MIDIDescriptor {
 	//	IAD
 	IADDescriptor                      iad;
