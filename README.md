@@ -1,4 +1,8 @@
-# SIMPLEMIDI for Arduino
+<p align="center">
+<img src="Images/logo.svg" width="">
+</p>
+
+# SIMPLEMIDI for Arduino 
 
 as the title says... simple MIDI library for Arduino. The library also has support for MCU (Mackie Control Universal protocol)
 
