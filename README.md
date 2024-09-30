@@ -275,7 +275,7 @@ Midi events via USB are sent in 4 bytes.
 |Byte 0|Byte 1|Byte 2|Byte 3|
 |--|--|--|--|
 |Cable number \| Code Index Number (CableByte)|MIDI_0 (CommandByte)|MIDI_1 (Data1)|MIDI_2 (Data2)| 
-This was figured out from MIDI v1 spec, links mentioned in [In the case of an Emergency](#in-the-case-of-an-emergency) section and physical observation (With [Reaper](https://www.reaper.fm/) and with [MIDI-OX](http://www.midiox.com/))
+This was figured out from MIDI v1 spec, links mentioned in [In the case of an ***Emergency***](#in-the-case-of-an-emergency) section and physical observation (With [Reaper](https://www.reaper.fm/) and with [MIDI-OX](http://www.midiox.com/))
 
 Please refer to https://www.usb.org/sites/default/files/midi10.pdf section ***4 USB-MIDI Event Packets***
 
