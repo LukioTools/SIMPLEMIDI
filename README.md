@@ -4,7 +4,7 @@
 
 # SIMPLEMIDI for Arduino 
 
-as the title says... simple MIDI library for Arduino. The library also has support for MCU (Mackie Control Universal protocol)
+As the title says... simple MIDI library for Arduino. The library primarily supports MCU (Mackie Control Universal) protocol, but other protocolls may be rawdogged.
 
 ## Quick start
 
@@ -40,7 +40,7 @@ Feel free to open a new issue or do pull request. Fastest way to fix problem(s)/
 
 ## MIDI_USB
 
-instance creation.
+Instance creation.
 ```c++ 
 MIDI_USB midi;
 ```
@@ -55,7 +55,7 @@ MIDI_USB midi;
 |[`MIDI_USB::peek`](#peek)||reads `typename T` from buffer, doesnt increment pointer|
 |[`MIDI_USB::finalize`](#finalize)||is done automatically|
 |[`MIDI_USB::write`](#write)|`typename T data`|writes data to USB|
-|`MIDI_USB::flush`||flushes data|
+|[`MIDI_USB::flush`](#flush)||flushes data|
 
 ### Begin
 Calling `MIDI_USB::begin` starts MIDI communication between arduino and a computer. After this you can read [`MIDI_USB::write`](#write) and send [`MIDI_USB::read`](#read)  messages 
@@ -212,13 +212,13 @@ MIDI::DeviceControl::NoteBtn<MIDI_USB, MIDI::MCU::NoteMapping::PLAY> playBtn(mid
 MIDI::DeviceControl::PitchRotaryEncoder<MIDI_USB, MIDI::MCU::FADER_POSITION_MASTER> rotaryEncoder(midi, 100);
 
 ```
-in code you have to update the state of the device.
+In code you have to update the state of the device.
 ```c++
 playBtn.run(digitalRead(BUTTON_PIN));
 rotaryEncoder.run(digitalRead(CLK), digitalRead(DT)) // this has to be updated frequently
 ```
 
-you can update the rotary encoder status based on the midi status.
+You can update the rotary encoder status based on the midi status.
 ```c++
 while(Event* event = midi.read<Event>()){
     // updateValue will automatically find the correct midi packet and update based on it.
