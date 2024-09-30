@@ -136,14 +136,16 @@ midi.flush();
 ```
 
 ### Finalize
-cleans up the input buffer. Is used automatically before poll
+Cleans up the input buffer by copying unread bytes to the begining of the buffer. Finalze is used automatically before [poll](#poll).
 
 #### example
 
 ```c++
 // midi is a created MIDI_USB instance
 midi.poll();
-Event* e = midi.read<Event>();
+while(Event* e = midi.read<Event>())
+    ...
+
 midi.finalize();
 ``` 
 
@@ -238,26 +240,25 @@ Referenced from https://github.com/NicoG60/TouchMCU/blob/main/doc/mackie_control
 
 
 ## Debugging
-If you like to debug the midi events you have to define `MIDI_PRINT` before including the SIMPLEMIDI library.
+If you want to debug the midi events verbosely, you can define `MIDI_PRINT` before including the SIMPLEMIDI library.
 #### example
 ```c++
 #define MIDI_PRINT 1
 #include <SIMPLEMIDI.h>
 ```
 
-This will include add strings used in debugging and a method `Event::print(T printable)` (usually passed `Serial`) Be careful this will increase program memory usage a lot!  
+This will include add PROGMEM strings, toString functionality for most of the enums and a method `Event::print(T printable)` (usually passed `Serial`) 
+<br>
+**Be carefull, inclusion of PROGMEM strings will increase program memory drastically!**
 
 #### example
 ```c++
-    Event* event = midi.read<Event>();
-    event->print(Serial);
+Event* event = midi.read<Event>();
+event->print(Serial); // Serial is the Serial interface used for printing, or other similiar Class.
+// Expected response: NoteOFF[0]{ Note: REC1, Velocity: 0 }
 ```
 
-```c++
-==> NoteOFF[0]{ Note: REC1, Velocity: 0 }
-```
-
-## In Case of Emergency
+## In the Case of an Emergency
 You may find these links helpful <br>
 https://midi.org/summary-of-midi-1-0-messages 
 <br>
@@ -279,4 +280,4 @@ please refer to https://www.usb.org/sites/default/files/midi10.pdf ("4 USB-MIDI 
 
 
 ## License
-GPL 2.0
+GPLv2
