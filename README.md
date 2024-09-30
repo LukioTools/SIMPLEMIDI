@@ -91,7 +91,8 @@ Read is most commonly used with types like [`MIDI::Event`](#event) or byte.
 
 #### Example
 ```c++
-midi.poll(); // midi is a created MIDI_USB instance
+// midi is a created MIDI_USB instance
+midi.poll(); 
 while(Event* event = midi.read<Event>()){
     //use event
 }
@@ -103,7 +104,8 @@ This function is perfect when you need to be an indesicive ~~cunt~~.
 
 #### Example
 ```c++
-midi.poll(); // midi is a created MIDI_USB instance
+// midi is a created MIDI_USB instance
+midi.poll(); 
 if(byte* data = midi.peek<byte>() && data == 20){
     auto e = midi.read<Event>();
     ...
@@ -121,7 +123,8 @@ Write is most commonly used with types like [`MIDI::Event`](#event). Normally wr
 #### Example
 ```c++
 Event ev(...); 
-midi.write(ev); // midi is a created MIDI_USB instance
+// midi is a created MIDI_USB instance
+midi.write(ev); 
     //or using pointer interface
 midi.flush();
 
@@ -129,7 +132,8 @@ midi.flush();
 
 char* data = ...;
 size_t dataSize = ...;
-midi.write(data, dataSize); // midi is a created MIDI_USB instance
+// midi is a created MIDI_USB instance
+midi.write(data, dataSize); 
     //MIDI::send* family of functions are also a great way of sending midi data
 MIDI::sendNoteON(midi, ...);
 midi.flush();
