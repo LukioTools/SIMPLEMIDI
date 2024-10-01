@@ -4,7 +4,7 @@
 
 # SIMPLEMIDI for Arduino 
 
-As the title says... simple MIDI library for Arduino. The library primarily supports MCU (Mackie Control Universal) protocol, but other protocolls may be rawdogged.
+As the title says... simple MIDI library for Arduino. The library primarily supports MCU (Mackie Control Universal) protocol, but other protocols may be rawdogged.
 
 ## Quick start
 
